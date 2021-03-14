@@ -1,31 +1,69 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Cormorant+Infant:wght@300&display=swap');
 
+:root {
+  --primary-wht: rgb(249, 249, 249);
+  --primary-gry: rgba(175, 174, 174, 0.8);
+
+  --fnt-title: 'Shippori Mincho B1', serif;
+  --fnt-primary: 'Roboto', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  font-family: var(--fnt-primary);
+  background-image: url('../../assets/images/landing.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  padding: 0.3rem;
 }
 
 h1 {
-    
+  margin-left: 0.3rem;
+  font-size: 1.3rem;
+  font-family: var(--fnt-title);
+  font-weight: 300;
+  color: var(--primary-wht);
 }
 
 .search-container {
-    width: 150px;
-    height: 30px;
-    border: 1px solid gray;
-    border-radius: 20px;
-    padding: 0 12px;
-    height: 100%;
-    display: inline-flex;
-    align-items: center; 
+  /* height: 30px; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 12px;
+  height: 100%;
 }
 
 #search-bar {
-    margin: 0;
-    padding: 0;
-    border: none;
-    box-shadow: none;
-    height: 100%;
-    background: transparent;
+  width: 30vw;
+  margin: 0;
+  padding: 0 0.5rem;
+  border: 1px solid var(--primary-gry);
+  border-radius: 20px;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.map-marker {
+  color: var(--primary-wht);
 }
 
 .btn {
-    
 }
