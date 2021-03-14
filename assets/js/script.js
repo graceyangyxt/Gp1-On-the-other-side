@@ -52,6 +52,7 @@ landingCurrLoc.addEventListener('click', function () {
     console.log(lat, lon);
 
     initMap(lat, lon);
+    reverseGeo(lat, lon);
     if (initLocationPg.classList.contains('hide')) {
       initLocationPg.classList.remove('hide');
     }
@@ -70,7 +71,17 @@ function getAntipodes(x, y) {
 }
 
 // fetch api using coordinates
-function reverseGeo() {}
+function reverseGeo(x, y) {
+  fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${x},${y}&key=${gKey}`
+  )
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+    });
+}
 
 function initMap(x, y) {
   if (x && y) {
