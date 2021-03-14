@@ -21,9 +21,11 @@
         <h1>The Other Side</h1>
         <div class="search-container hide">
           <i class="fas fa-map-marker-alt map-marker"></i>
+          <form>
           <input type="text" placeholder="Search" id="search-bar" />
           <button type="submit" class="btn" id="search-btn">Search</button>
-          <button type="submit" class="btn" id="randomize">Randomize</button>
+          <!-- <button type="submit" class="btn" id="randomize">Randomize</button> -->
+        </form>
         </div>
       </nav>
     </header>
@@ -38,12 +40,12 @@
         </div>
         <div class="btn-cont">
           <button type="submit" class="btn" id="landing-search-btn">Search</button>
-          <button type="submit" class="btn" id="landing-randomize">Randomize</button>
+          <!-- <button type="submit" class="btn" id="landing-randomize">Randomize</button> -->
         </div>
       </form>
     </div>
 
-    <main class="initial-location-pg hide">
+    <main class="results-pg hide">
       <div id="map"></div>
       <div class="current-location-cont">
         <div>
@@ -51,6 +53,8 @@
           <h2 class="state"></h2>
           <h2 class="country"></h2>
         </div>
+        <h3>What's on the other side?</h3>
+        <button type="button" class="btn" id="antipdal-btn">Find out</button>
       </div>
     </main>
   </div>

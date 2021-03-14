@@ -105,7 +105,7 @@ h2 {
   color: var(--primary-wht);
 }
 
-.initial-location-pg {
+.results-pg {
   display: flex;
   flex-direction: column;
   justify-content: center;

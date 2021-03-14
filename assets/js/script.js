@@ -10,17 +10,20 @@ const searchCont = document.querySelector('.search-container');
 const navSearch = document.querySelector('#search-bar');
 const currLocation = document.querySelector('.map-marker');
 const submitBtn = document.querySelector('#search-btn');
-const randomBtn = document.querySelector('#randomize');
+// const randomBtn = document.querySelector('#randomize');
 
 // landing page elements
 const landingSearch = document.querySelector('#landing-search-bar');
 const landingCurrLoc = document.querySelector('.landing-map-marker');
 const landingSubmitBtn = document.querySelector('#landing-search-btn');
-const landingRandomBtn = document.querySelector('#landing-randomize');
+// const landingRandomBtn = document.querySelector('#landing-randomize');
+
+// results page elements
+const antipodeBtn = document.querySelector('#antipdal-btn');
 
 // pages
 const landingPg = document.querySelector('#landing-pg');
-const initLocationPg = document.querySelector('.initial-location-pg');
+const resultsPg = document.querySelector('.results-pg');
 
 // event listeners
 
@@ -29,12 +32,14 @@ currLocation.addEventListener('click', function () {
   navigator.geolocation.getCurrentPosition(function (position) {
     lat = position.coords.latitude;
     lon = position.coords.longitude;
-    console.log(lat, lon);
+    // console.log(lat, lon);
 
     initMap(lat, lon);
+    reverseGeo(lat, lon);
+
     // toggles visibility for the second page successfully
-    if (initLocationPg.classList.contains('hide')) {
-      initLocationPg.classList.remove('hide');
+    if (resultsPg.classList.contains('hide')) {
+      resultsPg.classList.remove('hide');
     }
     if (landingPg.classList.contains('hide') === false) {
       landingPg.classList.add('hide');
@@ -48,7 +53,9 @@ submitBtn.addEventListener('click', function (e) {
   console.log(navSearch.value);
   const searchValue = navSearch.value;
   searchGeo(searchValue);
+  navSearch.value = '';
 });
+
 // ** landing page ** current location icon - get current coordinates
 landingCurrLoc.addEventListener('click', function () {
   landingPg.classList.add('hide'); // toggles visibility of landing page.
@@ -60,8 +67,8 @@ landingCurrLoc.addEventListener('click', function () {
 
     initMap(lat, lon);
     reverseGeo(lat, lon);
-    if (initLocationPg.classList.contains('hide')) {
-      initLocationPg.classList.remove('hide');
+    if (resultsPg.classList.contains('hide')) {
+      resultsPg.classList.remove('hide');
     }
     if (searchCont.classList.contains('hide')) {
       searchCont.classList.remove('hide'); // toggles visibility of navbar
@@ -72,9 +79,25 @@ landingCurrLoc.addEventListener('click', function () {
 //  ** landing page ** searched location
 landingSubmitBtn.addEventListener('click', function (e) {
   e.preventDefault();
+  landingPg.classList.add('hide');
   console.log(landingSearch.value);
   const searchValue = landingSearch.value;
   searchGeo(searchValue);
+  if (resultsPg.classList.contains('hide')) {
+    resultsPg.classList.remove('hide');
+  }
+  if (searchCont.classList.contains('hide')) {
+    searchCont.classList.remove('hide'); // toggles visibility of navbar
+  }
+});
+
+// ** results page **
+antipodeBtn.addEventListener('click', function () {
+  getFromLocalStorage(lat, lon);
+  console.log(lat, lon);
+  getAntipodes(lat, lon);
+  console.log(antLat, antLon);
+  initMap(antLat, antLon);
 });
 
 // functions
@@ -100,12 +123,14 @@ function reverseGeo(x, y) {
       document.querySelector('.city').textContent = city;
       document.querySelector('.state').textContent = state;
       document.querySelector('.country').textContent = country;
+
+      saveToLocalStorage(x, y);
     });
 }
 
 // fetch api for search bar - https://developers.google.com/maps/documentation/geocoding/overview#geocoding-requests
-function searchGeo(search) {
-  fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${search}&key=${gKey}
+function searchGeo(x) {
+  fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${x}&key=${gKey}
   `)
     .then(function (response) {
       return response.json();
@@ -120,13 +145,16 @@ function searchGeo(search) {
       document.querySelector('.state').textContent = state;
       document.querySelector('.country').textContent = country;
 
-      initMap(lat, lon); // not sure why this isn't working
+      saveToLocalStorage(lat, lon);
+      initMap(lat, lon);
     });
 }
 
 // map https://developers.google.com/maps/documentation/javascript/overview
 function initMap(x, y) {
   if (x && y) {
+    console.log(document.getElementById('map'));
+    document.getElementById('map').innerHTML = '';
     const map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: x, lng: y },
       zoom: 15,
@@ -149,6 +177,20 @@ function initMap(x, y) {
     });
     map.setTilt(45);
   }
+}
+
+// save selected coordinates to local storage
+function saveToLocalStorage(x, y) {
+  if (x && y) {
+    localStorage.setItem('lat', x);
+    localStorage.setItem('lon', y);
+  }
+}
+
+// get selected coordinates from local storage
+function getFromLocalStorage() {
+  lat = parseInt(localStorage.getItem('lat'));
+  lon = parseInt(localStorage.getItem('lon'));
 }
 
 // // fetch for fish data
