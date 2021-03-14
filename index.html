@@ -31,17 +31,27 @@
     <div class="wrapper">
     <div id="landing-pg">
       <h2>Where Am I?</h2>
-      <div class="landing-search-cont">
-        <input type="text" placeholder="Search" id="landing-search-bar" />
-        <i class="fas fa-map-marker-alt landing-map-marker"></i>
-      </div>
-      <div class="btn-cont">
-        <button type="submit" class="btn" id="landing-search-btn">Search</button>
-        <button type="submit" class="btn" id="landing-randomize">Randomize</button>
-      </div>
+      <form>
+        <div class="landing-search-cont">
+          <input type="text" placeholder="Search" id="landing-search-bar" />
+          <i class="fas fa-map-marker-alt landing-map-marker"></i>
+        </div>
+        <div class="btn-cont">
+          <button type="submit" class="btn" id="landing-search-btn">Search</button>
+          <button type="submit" class="btn" id="landing-randomize">Randomize</button>
+        </div>
+      </form>
     </div>
+
     <main class="initial-location-pg hide">
       <div id="map"></div>
+      <div class="current-location-cont">
+        <div>
+          <h2 class="city"></h2>
+          <h2 class="state"></h2>
+          <h2 class="country"></h2>
+        </div>
+      </div>
     </main>
   </div>
 

@@ -24,7 +24,7 @@ const initLocationPg = document.querySelector('.initial-location-pg');
 
 // event listeners
 
-// **nav-bar** current location icon - get current coordinates
+// ** nav-bar ** current location icon - get current coordinates
 currLocation.addEventListener('click', function () {
   navigator.geolocation.getCurrentPosition(function (position) {
     lat = position.coords.latitude;
@@ -42,7 +42,14 @@ currLocation.addEventListener('click', function () {
   });
 });
 
-// ** landing page** current location icon - get current coordinates
+// ** nav-bar ** searched location
+submitBtn.addEventListener('click', function (e) {
+  e.preventDefault();
+  console.log(navSearch.value);
+  const searchValue = navSearch.value;
+  searchGeo(searchValue);
+});
+// ** landing page ** current location icon - get current coordinates
 landingCurrLoc.addEventListener('click', function () {
   landingPg.classList.add('hide'); // toggles visibility of landing page.
   // **** we need a loading bar or animation like Robert suggested while geolocation pulls the coordinates
@@ -62,6 +69,14 @@ landingCurrLoc.addEventListener('click', function () {
   });
 });
 
+//  ** landing page ** searched location
+landingSubmitBtn.addEventListener('click', function (e) {
+  e.preventDefault();
+  console.log(landingSearch.value);
+  const searchValue = landingSearch.value;
+  searchGeo(searchValue);
+});
+
 // functions
 
 // antipodal coordinates
@@ -70,7 +85,7 @@ function getAntipodes(x, y) {
   antLon = y + 180;
 }
 
-// fetch api using coordinates
+// fetch api using coordinates - https://developers.google.com/maps/documentation/geocoding/overview#geocoding-requests
 function reverseGeo(x, y) {
   fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${x},${y}&key=${gKey}`
@@ -79,25 +94,60 @@ function reverseGeo(x, y) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
+      const city = data.results[6].address_components[1].long_name;
+      const state = data.results[6].address_components[2].long_name;
+      const country = data.results[6].address_components[3].long_name;
+      document.querySelector('.city').textContent = city;
+      document.querySelector('.state').textContent = state;
+      document.querySelector('.country').textContent = country;
     });
 }
 
+// fetch api for search bar - https://developers.google.com/maps/documentation/geocoding/overview#geocoding-requests
+function searchGeo(search) {
+  fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${search}&key=${gKey}
+  `)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      const lat = data.results[0].geometry.location.lat;
+      const lon = data.results[0].geometry.location.lng;
+      const city = data.results[0].address_components[0].long_name;
+      const state = data.results[0].address_components[2].long_name;
+      const country = data.results[0].address_components[3].long_name;
+      document.querySelector('.city').textContent = city;
+      document.querySelector('.state').textContent = state;
+      document.querySelector('.country').textContent = country;
+
+      initMap(lat, lon); // not sure why this isn't working
+    });
+}
+
+// map https://developers.google.com/maps/documentation/javascript/overview
 function initMap(x, y) {
   if (x && y) {
-    var z = 1;
-    var interval = setInterval(increment, 1500);
-    function increment() {
-      if (z < 20) {
-        z = (z % 20) + 3;
-        const map = new google.maps.Map(document.getElementById('map'), {
-          center: { lat: x, lng: y },
-          zoom: z,
-          mapTypeId: 'satellite',
-        });
-        map.setTilt(45);
-      }
-    }
+    const map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: x, lng: y },
+      zoom: 15,
+      mapTypeId: 'satellite',
+      mapTypeControl: false,
+      mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+        position: google.maps.ControlPosition.TOP_CENTER,
+      },
+      zoomControl: true,
+      zoomControlOptions: {
+        position: google.maps.ControlPosition.LEFT_CENTER,
+      },
+      scaleControl: false,
+      streetViewControl: false,
+      streetViewControlOptions: {
+        position: google.maps.ControlPosition.LEFT_TOP,
+      },
+      fullscreenControl: false,
+    });
+    map.setTilt(45);
   }
 }
 
