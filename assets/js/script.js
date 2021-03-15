@@ -132,7 +132,8 @@ function reverseGeo(x, y) {
 
             appendLocation(state, country);
           } else {
-            const state = data.results[0].address_components[0].long_name;
+            const state = data.results[0].formatted_address;
+            console.log(state);
 
             appendLocation(state);
           }
@@ -171,15 +172,11 @@ function searchGeo(x) {
             const country = data.results[0].address_components[2].long_name;
 
             appendLocation(state, country);
-          } else if (
-            !data.results[0].address_components.length ||
-            data.results[0].address_components.length === 0
-          ) {
-            const state = "Oops! Couldn't find it...";
+          } else {
+            const state = data.results[0].formatted_address;
+            console.log(state);
 
             appendLocation(state);
-          } else {
-            const state = data.results[0].address_components[0].long_name;
           }
 
           saveToLocalStorage(lat, lon);
@@ -232,25 +229,29 @@ function appendLocation(x, y, z) {
   </div>
   <h2>${z}</h2>
   </div>`;
-  } else if (x && y) {
+    locationAppendCont.appendChild(titleEl);
+    console.log(locationAppendCont.appendChild(titleEl));
+  } else if (y && z) {
     titleEl.innerHTML = `
   <div class="location-header">
-  <h2>${x},</h2>
-  <h2>${y}</h2>
+  <h2>${y},</h2>
+  <h2>${z}</h2>
   </div>
   </div>`;
-  } else {
+    locationAppendCont.appendChild(titleEl);
+  } else if (y) {
     titleEl.innerHTML = `
     <div class="location-header>
-    <h2>${x},</h2>
+    <h2>${y}</h2>
     </div>`;
+    locationAppendCont.appendChild(titleEl);
+    console.log(locationAppendCont.appendChild(titleEl));
   }
-  locationAppendCont.appendChild(titleEl);
 }
 
 // clear name of location for map
 function clearLocation() {
-  if (titleEl) {
+  if (titleEl === true) {
     locationAppendCont.removeChild(titleEl);
   }
 }

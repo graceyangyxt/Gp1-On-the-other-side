@@ -51,6 +51,10 @@ nav {
   padding: 0.3rem;
 }
 
+nav a {
+  text-decoration: none;
+}
+
 h1 {
   margin-left: 0.3rem;
   font-size: 1.3em;
@@ -133,8 +137,8 @@ form::after {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  width: 16rem;
   height: 10vh;
+  /* width: 30vw; */
 }
 
 .landing-search-cont {
