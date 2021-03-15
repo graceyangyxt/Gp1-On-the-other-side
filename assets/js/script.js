@@ -20,6 +20,13 @@ const landingSubmitBtn = document.querySelector('#landing-search-btn');
 
 // results page elements
 const antipodeBtn = document.querySelector('#antipdal-btn');
+const locationAppendCont = document.querySelector('#location-append');
+let titleEl;
+// const currentLocationCont = document.querySelector('#current-location-cont');
+// const locationHeader = document.querySelector('.location-header');
+// let cityEl;
+// let stateEl;
+// let countryEl;
 
 // pages
 const landingPg = document.querySelector('#landing-pg');
@@ -101,6 +108,7 @@ antipodeBtn.addEventListener('click', function () {
   getAntipodes(lat, lon);
   console.log(antLat, antLon);
   initMap(antLat, antLon);
+  reverseGeo(antLat, antLon);
 });
 
 // functions
@@ -113,6 +121,10 @@ function getAntipodes(x, y) {
 
 // fetch api using coordinates - https://developers.google.com/maps/documentation/geocoding/overview#geocoding-requests
 function reverseGeo(x, y) {
+  if (titleEl) {
+    clearLocation();
+  }
+
   fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${x},${y}&key=${gKey}`
   )
@@ -120,19 +132,28 @@ function reverseGeo(x, y) {
       return response.json();
     })
     .then(function (data) {
-      const city = data.results[6].address_components[1].long_name;
-      const state = data.results[6].address_components[2].long_name;
-      const country = data.results[6].address_components[3].long_name;
-      document.querySelector('.city').textContent = city;
-      document.querySelector('.state').textContent = state;
-      document.querySelector('.country').textContent = country;
+      if (data.results[6]) {
+        const city = data.results[6].address_components[1].long_name;
+        const state = data.results[6].address_components[2].long_name;
+        const country = data.results[6].address_components[3].long_name;
 
+        appendLocation(city, state, country);
+      } else {
+        const location = data.results[0].address_components[0].long_name;
+        titleEl = document.createElement('h2');
+        titleEl.textContent = location;
+        locationAppendCont.appendChild(titleEl);
+      }
       saveToLocalStorage(x, y);
     });
 }
 
 // fetch api for search bar - https://developers.google.com/maps/documentation/geocoding/overview#geocoding-requests
 function searchGeo(x) {
+  if (titleEl) {
+    clearLocation();
+  }
+
   fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${x}&key=${gKey}
   `)
     .then(function (response) {
@@ -141,12 +162,11 @@ function searchGeo(x) {
     .then(function (data) {
       const lat = data.results[0].geometry.location.lat;
       const lon = data.results[0].geometry.location.lng;
-      const city = data.results[0].address_components[0].long_name;
+      const city = data.results[0].address_components[1].long_name;
       const state = data.results[0].address_components[2].long_name;
       const country = data.results[0].address_components[3].long_name;
-      document.querySelector('.city').textContent = city;
-      document.querySelector('.state').textContent = state;
-      document.querySelector('.country').textContent = country;
+
+      appendLocation(city, state, country);
 
       saveToLocalStorage(lat, lon);
       initMap(lat, lon);
@@ -160,7 +180,7 @@ function initMap(x, y) {
     document.getElementById('map').innerHTML = '';
     const map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: x, lng: y },
-      zoom: 15,
+      zoom: 10,
       mapTypeId: 'satellite',
       mapTypeControl: false,
       mapTypeControlOptions: {
@@ -180,6 +200,38 @@ function initMap(x, y) {
     });
     map.setTilt(45);
   }
+}
+
+// append name of location for map
+function appendLocation(x, y, z) {
+  titleEl = document.createElement('div');
+  titleEl.classList.add('current-location-cont');
+  titleEl.innerHTML = `
+  <div class="location-header">
+  <h2>${x},</h2>
+  <h2>${y}</h2>
+  </div>
+  <h2>${z}</h2>
+  </div>`;
+  locationAppendCont.appendChild(titleEl);
+}
+
+// clear name of location for map
+function clearLocation() {
+  locationAppendCont.removeChild(titleEl);
+  // if (cityEl && stateEl && countryEl) {
+  //   locationHeader.removeChild(cityEl);
+  //   locationHeader.removeChild(stateEl);
+  //   currentLocationCont.removeChild(countryEl);
+  // } else if (cityEl && !stateEl && !countryEl) {
+  //   locationHeader.removeChild(cityEl);
+  // } else if (stateEl && !cityEl && !countryEl) {
+  //   locationHeader.removeChild(stateEl);
+  // } else if (countryEl && !cityEl && !stateEl) {
+  //   currentLocationCont.removeChild(countryEl);
+
+  // not working when I select locations over and over again. I think I need to append an entire container and then remove the whole container
+  // }
 }
 
 // save selected coordinates to local storage

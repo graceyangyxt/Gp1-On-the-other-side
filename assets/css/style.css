@@ -105,6 +105,7 @@ h2 {
   color: var(--primary-wht);
 }
 
+/* results page */
 .results-pg {
   display: flex;
   flex-direction: column;
@@ -116,6 +117,20 @@ h2 {
   border-radius: 20px;
   background-color: var(--bg-wht);
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.current-location-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.location-header {
+  display: flex;
+}
+
+.current-location-cont h2 {
+  margin: 0 0.3rem;
 }
 
 #map {
