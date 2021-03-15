@@ -3,7 +3,9 @@
 :root {
   --primary-wht: rgb(249, 249, 249);
   --primary-gry: rgba(175, 174, 174, 0.8);
-  --bg-wht: rgba(51, 51, 51, 0.8);
+  --primary-blue: rgb(84, 123, 196);
+  --bg-blue: rgba(84, 123, 196, 0.8);
+  --bg-blk: rgba(51, 51, 51, 0.3);
 
   --fnt-title: 'Shippori Mincho B1', serif;
   --fnt-primary: 'Roboto', sans-serif;
@@ -17,10 +19,19 @@
   box-sizing: border-box;
 }
 
+html {
+  background: url(../images/landing.png) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 body {
   height: 100vh;
   width: 100vw;
   font-family: var(--fnt-primary);
+  background-color: var(--bg-blk);
 }
 
 .wrapper {
@@ -29,20 +40,6 @@ body {
   justify-content: center;
   align-items: center;
   height: 80vh;
-}
-
-.bg {
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  z-index: -10;
-}
-
-.bg img {
-  height: 100vh;
 }
 
 /* nav-bar */
@@ -56,7 +53,7 @@ nav {
 
 h1 {
   margin-left: 0.3rem;
-  font-size: 1.3rem;
+  font-size: 1.3em;
   font-family: var(--fnt-title);
   font-weight: 300;
   color: var(--primary-wht);
@@ -64,22 +61,63 @@ h1 {
 
 .search-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   padding: 0 12px;
   height: 100%;
+  width: 45%;
 }
 
-#search-bar {
-  width: 30vw;
-  margin: 0;
+form {
+  width: 32vw;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+form input {
+  float: left;
+  width: 78%;
+  height: 1.3rem;
   padding: 0 0.5rem;
+  font-family: var(--fnt-primary);
   color: var(--primary-wht);
   border: 1px solid var(--primary-gry);
-  border-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
   outline: none;
-  box-shadow: none;
   background: transparent;
+}
+
+.btn {
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 22%;
+  height: 1.3rem;
+  border: 1px solid var(--primary-gry);
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  outline: none;
+  color: var(--primary-wht);
+  background: linear-gradient(
+    to bottom,
+    var(--primary-gry) 0%,
+    var(--bg-blk) 100%
+  );
+}
+
+.btn:hover,
+.btn:focus,
+.btn:active {
+  background: linear-gradient(
+    to bottom,
+    var(--primary-blue) 0%,
+    var(--bg-blue) 100%
+  );
+}
+
+form::after {
+  clear: both;
 }
 
 .map-marker,
@@ -88,20 +126,34 @@ h1 {
   cursor: pointer;
 }
 
-.btn {
-}
-
 /* landing page */
-.landing-pg {
+#landing-pg {
+  position: absolute;
+  right: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  width: 80vw;
-  height: 30vh;
+  width: 16rem;
+  height: 10vh;
+}
+
+.landing-search-cont {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.landing-search-cont form {
+  width: 90%;
+  margin: 0;
+  box-shadow: rgba(0, 0, 0, 0.3) 1.95px 1.95px 2.6px;
 }
 
 h2 {
   font-family: var(--fnt-title);
+  font-weight: 300;
+  font-size: 1.3em;
   color: var(--primary-wht);
 }
 
@@ -115,7 +167,7 @@ h2 {
   height: 95vh;
   margin: 0 auto;
   border-radius: 20px;
-  background-color: var(--bg-wht);
+  background-color: var(--bg-blk);
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
@@ -140,4 +192,18 @@ h2 {
 
 .hide {
   display: none;
+}
+
+@media only screen and (min-device-width: 768px) {
+  form {
+    width: 38vw;
+  }
+
+  #landing-pg {
+    width: 23rem;
+  }
+
+  .landing-search-cont {
+    justify-content: space-evenly;
+  }
 }

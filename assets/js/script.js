@@ -33,7 +33,7 @@ currLocation.addEventListener('click', function () {
     lat = position.coords.latitude;
     lon = position.coords.longitude;
 
-    initMap(lat, lon);
+    clearLocation();
     reverseGeo(lat, lon);
 
     // toggles visibility for the second page successfully
@@ -50,6 +50,7 @@ currLocation.addEventListener('click', function () {
 submitBtn.addEventListener('click', function (e) {
   e.preventDefault();
   const searchValue = navSearch.value;
+  clearLocation();
   searchGeo(searchValue);
   navSearch.value = '';
 });
@@ -62,8 +63,9 @@ landingCurrLoc.addEventListener('click', function () {
     lat = position.coords.latitude;
     lon = position.coords.longitude;
 
-    initMap(lat, lon);
+    clearLocation();
     reverseGeo(lat, lon);
+
     if (resultsPg.classList.contains('hide')) {
       resultsPg.classList.remove('hide');
     }
@@ -80,6 +82,7 @@ landingSubmitBtn.addEventListener('click', function (e) {
 
   const searchValue = landingSearch.value;
 
+  clearLocation();
   searchGeo(searchValue);
 
   if (resultsPg.classList.contains('hide')) {
@@ -94,7 +97,7 @@ landingSubmitBtn.addEventListener('click', function (e) {
 antipodeBtn.addEventListener('click', function () {
   getFromLocalStorage(lat, lon);
   getAntipodes(lat, lon);
-  initMap(antLat, antLon);
+  clearLocation();
   reverseGeo(antLat, antLon);
 });
 
@@ -107,93 +110,85 @@ function getAntipodes(x, y) {
 
 // fetch api using coordinates - https://developers.google.com/maps/documentation/geocoding/overview#geocoding-requests
 function reverseGeo(x, y) {
-  if (titleEl) {
-    clearLocation();
-  }
-
   fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${x},${y}&key=${gKey}`
   )
     .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data);
-      if (data.results[0].address_components.length >= 4) {
-        const city = data.results[0].address_components[1].long_name;
-        const state = data.results[0].address_components[2].long_name;
-        const country = data.results[0].address_components[3].long_name;
-
-        appendLocation(city, state, country);
-        saveToLocalStorage(lat, lon);
-        initMap(lat, lon);
-      } else if (data.results[0].address_components.length >= 3) {
-        const state = data.results[0].address_components[1].long_name;
-        const country = data.results[0].address_components[2].long_name;
-
-        appendLocation(state, country);
-        saveToLocalStorage(lat, lon);
-        initMap(lat, lon);
+      if (response.status !== 200) {
+        // modal
+        console.log('damn');
       } else {
-        const state = data.results[0].address_components[0].long_name;
+        return response.json().then(function (data) {
+          console.log(data);
+          if (data.results[0].address_components.length >= 4) {
+            const city = data.results[0].address_components[3].long_name;
+            const state = data.results[0].address_components[5].long_name;
+            const country = data.results[0].address_components[6].long_name;
 
-        appendLocation(state);
-        saveToLocalStorage(lat, lon);
-        initMap(lat, lon);
+            appendLocation(city, state, country);
+          } else if (data.results[0].address_components.length >= 3) {
+            const state = data.results[0].address_components[1].long_name;
+            const country = data.results[0].address_components[2].long_name;
+
+            appendLocation(state, country);
+          } else {
+            const state = data.results[0].address_components[0].long_name;
+
+            appendLocation(state);
+          }
+
+          saveToLocalStorage(lat, lon);
+          initMap(x, y);
+        });
       }
     })
     .catch(function (err) {
       console.log(err);
-      if (err) {
-        searchGeo('disney land');
-      }
     });
 }
 
 // fetch api for search bar - https://developers.google.com/maps/documentation/geocoding/overview#geocoding-requests
 function searchGeo(x) {
-  if (titleEl) {
-    clearLocation();
-  }
-
   fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${x}&key=${gKey}
   `)
     .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data);
-      const lat = data.results[0].geometry.location.lat;
-      const lon = data.results[0].geometry.location.lng;
-
-      if (data.results[0].address_components.length >= 4) {
-        const city = data.results[0].address_components[1].long_name;
-        const state = data.results[0].address_components[2].long_name;
-        const country = data.results[0].address_components[3].long_name;
-
-        appendLocation(city, state, country);
-        saveToLocalStorage(lat, lon);
-        initMap(lat, lon);
-      } else if (data.results[0].address_components.length >= 3) {
-        const state = data.results[0].address_components[1].long_name;
-        const country = data.results[0].address_components[2].long_name;
-
-        appendLocation(state, country);
-        saveToLocalStorage(lat, lon);
-        initMap(lat, lon);
+      if (response.status !== 200) {
+        // modal
       } else {
-        const state = data.results[0].address_components[0].long_name;
+        return response.json().then(function (data) {
+          console.log(data);
+          const lat = data.results[0].geometry.location.lat;
+          const lon = data.results[0].geometry.location.lng;
 
-        appendLocation(state);
-        saveToLocalStorage(lat, lon);
-        initMap(lat, lon);
+          if (data.results[0].address_components.length >= 4) {
+            const city = data.results[0].address_components[1].long_name;
+            const state = data.results[0].address_components[2].long_name;
+            const country = data.results[0].address_components[3].long_name;
+
+            appendLocation(city, state, country);
+          } else if (data.results[0].address_components.length >= 3) {
+            const state = data.results[0].address_components[1].long_name;
+            const country = data.results[0].address_components[2].long_name;
+
+            appendLocation(state, country);
+          } else if (
+            !data.results[0].address_components.length ||
+            data.results[0].address_components.length === 0
+          ) {
+            const state = "Oops! Couldn't find it...";
+
+            appendLocation(state);
+          } else {
+            const state = data.results[0].address_components[0].long_name;
+          }
+
+          saveToLocalStorage(lat, lon);
+          initMap(lat, lon);
+        });
       }
     })
     .catch(function (err) {
       console.log(err);
-      if (err) {
-        searchGeo('disney world');
-      }
     });
 }
 
@@ -229,30 +224,24 @@ function initMap(x, y) {
 function appendLocation(x, y, z) {
   titleEl = document.createElement('div');
   titleEl.classList.add('current-location-cont');
-  if ((x, y, z)) {
+  if (x && y && z) {
     titleEl.innerHTML = `
   <div class="location-header">
   <h2>${x},</h2>
   <h2>${y}</h2>
   </div>
-  <h2>${z}</h2>`;
-  } else if ((x, y)) {
+  <h2>${z}</h2>
+  </div>`;
+  } else if (x && y) {
     titleEl.innerHTML = `
   <div class="location-header">
   <h2>${x},</h2>
   <h2>${y}</h2>
+  </div>
   </div>`;
-  } else if (err) {
-    titleEl.innerHTML = `
-    <div class="location-header">
-    <h2>${"Oops! We couldn't find it."},</h2>
-    <h2>${"Here's Disney World"}</h2>
-    </div>
-    <h2>${"It's A Small World After All"}</h2>`;
-    locationAppendCont.appendChild(titleEl);
   } else {
-    titleEl.innerHTML = `    
-    <div class="location-header">
+    titleEl.innerHTML = `
+    <div class="location-header>
     <h2>${x},</h2>
     </div>`;
   }
@@ -261,7 +250,9 @@ function appendLocation(x, y, z) {
 
 // clear name of location for map
 function clearLocation() {
-  locationAppendCont.removeChild(titleEl);
+  if (titleEl) {
+    locationAppendCont.removeChild(titleEl);
+  }
 }
 
 // save selected coordinates to local storage

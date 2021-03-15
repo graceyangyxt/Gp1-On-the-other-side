@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Other Side</title>
+    <link rel="shortcut icon" href="./assets/images/fav-earth.svg" type="image/x-icon">
     <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
@@ -14,18 +15,17 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
-    <div class="bg"><img src="./assets/images/landing.png" alt="earth"></div>
     <header>
       <nav>
         <!-- nav bar with title, maybe search bar once we get onto the second page -- add a link to github repo -->
         <h1>The Other Side</h1>
         <div class="search-container hide">
-          <i class="fas fa-map-marker-alt map-marker"></i>
+          <i class="fas fa-map-marker-alt map-marker fa-xs"></i>
           <form>
-          <input type="text" placeholder="Search" id="search-bar" />
-          <button type="submit" class="btn" id="search-btn">Search</button>
+            <input type="text" placeholder="Search" id="search-bar" />
+          <button type="submit" class="btn" id="search-btn"><i class="fa fa-search fa-xs"></i></button>
           <!-- <button type="submit" class="btn" id="randomize">Randomize</button> -->
-        </form>
+          </form>
         </div>
       </nav>
     </header>
@@ -33,16 +33,15 @@
     <div class="wrapper">
     <div id="landing-pg">
       <h2>Where Am I?</h2>
-      <form>
         <div class="landing-search-cont">
+          <i class="fas fa-map-marker-alt landing-map-marker fa-xs"></i>
+          <form>
           <input type="text" placeholder="Search" id="landing-search-bar" />
-          <i class="fas fa-map-marker-alt landing-map-marker"></i>
-        </div>
-        <div class="btn-cont">
-          <button type="submit" class="btn" id="landing-search-btn">Search</button>
+        
+          <button type="submit" class="btn" id="landing-search-btn"><i class="fa fa-search fa-xs"></i></button>
+        </form>
           <!-- <button type="submit" class="btn" id="landing-randomize">Randomize</button> -->
         </div>
-      </form>
     </div>
 
     <main class="results-pg hide">
