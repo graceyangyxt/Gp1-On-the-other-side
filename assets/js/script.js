@@ -106,6 +106,7 @@ antipodeBtn.addEventListener('click', function () {
 function getAntipodes(x, y) {
   antLat = x * -1;
   antLon = y + 180;
+  console.log(antLat, antLon);
 }
 
 // fetch api using coordinates - https://developers.google.com/maps/documentation/geocoding/overview#geocoding-requests
@@ -220,6 +221,7 @@ function initMap(x, y) {
 // append name of location for map
 function appendLocation(x, y, z) {
   titleEl = document.createElement('div');
+  h2El = document.createElement('h2');
   titleEl.classList.add('current-location-cont');
   if (x && y && z) {
     titleEl.innerHTML = `
@@ -227,8 +229,7 @@ function appendLocation(x, y, z) {
   <h2>${x},</h2>
   <h2>${y}</h2>
   </div>
-  <h2>${z}</h2>
-  </div>`;
+  <h2>${z}</h2>`;
     locationAppendCont.appendChild(titleEl);
     console.log(locationAppendCont.appendChild(titleEl));
   } else if (y && z) {
@@ -236,14 +237,15 @@ function appendLocation(x, y, z) {
   <div class="location-header">
   <h2>${y},</h2>
   <h2>${z}</h2>
-  </div>
   </div>`;
     locationAppendCont.appendChild(titleEl);
-  } else if (y) {
-    titleEl.innerHTML = `
-    <div class="location-header>
-    <h2>${y}</h2>
-    </div>`;
+  } else if (x) {
+    titleEl.appendChild(h2El);
+    h2El.textContent = x;
+    // titleEl.innerHTML = `
+    // <div class="location-header>
+    // <h2>${x}</h2>
+    // </div>`;
     locationAppendCont.appendChild(titleEl);
     console.log(locationAppendCont.appendChild(titleEl));
   }
@@ -251,7 +253,7 @@ function appendLocation(x, y, z) {
 
 // clear name of location for map
 function clearLocation() {
-  if (titleEl === true) {
+  if (titleEl) {
     locationAppendCont.removeChild(titleEl);
   }
 }
