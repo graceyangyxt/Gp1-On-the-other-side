@@ -10,23 +10,16 @@ const searchCont = document.querySelector('.search-container');
 const navSearch = document.querySelector('#search-bar');
 const currLocation = document.querySelector('.map-marker');
 const submitBtn = document.querySelector('#search-btn');
-// const randomBtn = document.querySelector('#randomize');
 
 // landing page elements
 const landingSearch = document.querySelector('#landing-search-bar');
 const landingCurrLoc = document.querySelector('.landing-map-marker');
 const landingSubmitBtn = document.querySelector('#landing-search-btn');
-// const landingRandomBtn = document.querySelector('#landing-randomize');
 
 // results page elements
 const antipodeBtn = document.querySelector('#antipdal-btn');
 const locationAppendCont = document.querySelector('#location-append');
 let titleEl;
-// const currentLocationCont = document.querySelector('#current-location-cont');
-// const locationHeader = document.querySelector('.location-header');
-// let cityEl;
-// let stateEl;
-// let countryEl;
 
 // pages
 const landingPg = document.querySelector('#landing-pg');
@@ -39,11 +32,7 @@ currLocation.addEventListener('click', function () {
   navigator.geolocation.getCurrentPosition(function (position) {
     lat = position.coords.latitude;
     lon = position.coords.longitude;
-    // console.log(lat, lon);
 
-    // console.log(lat, lon);
-    // getAntipodes(lat, lon);
-    // console.log(antLat, antLon);
     initMap(lat, lon);
     reverseGeo(lat, lon);
 
@@ -60,7 +49,6 @@ currLocation.addEventListener('click', function () {
 // ** nav-bar ** searched location
 submitBtn.addEventListener('click', function (e) {
   e.preventDefault();
-  console.log(navSearch.value);
   const searchValue = navSearch.value;
   searchGeo(searchValue);
   navSearch.value = '';
@@ -73,7 +61,6 @@ landingCurrLoc.addEventListener('click', function () {
   navigator.geolocation.getCurrentPosition(function (position) {
     lat = position.coords.latitude;
     lon = position.coords.longitude;
-    console.log(lat, lon);
 
     initMap(lat, lon);
     reverseGeo(lat, lon);
@@ -90,9 +77,11 @@ landingCurrLoc.addEventListener('click', function () {
 landingSubmitBtn.addEventListener('click', function (e) {
   e.preventDefault();
   landingPg.classList.add('hide');
-  console.log(landingSearch.value);
+
   const searchValue = landingSearch.value;
+
   searchGeo(searchValue);
+
   if (resultsPg.classList.contains('hide')) {
     resultsPg.classList.remove('hide');
   }
@@ -104,15 +93,12 @@ landingSubmitBtn.addEventListener('click', function (e) {
 // ** results page **
 antipodeBtn.addEventListener('click', function () {
   getFromLocalStorage(lat, lon);
-  console.log(lat, lon);
   getAntipodes(lat, lon);
-  console.log(antLat, antLon);
   initMap(antLat, antLon);
   reverseGeo(antLat, antLon);
 });
 
 // functions
-
 // antipodal coordinates
 function getAntipodes(x, y) {
   antLat = x * -1;
@@ -132,19 +118,35 @@ function reverseGeo(x, y) {
       return response.json();
     })
     .then(function (data) {
-      if (data.results[6]) {
-        const city = data.results[6].address_components[1].long_name;
-        const state = data.results[6].address_components[2].long_name;
-        const country = data.results[6].address_components[3].long_name;
+      console.log(data);
+      if (data.results[0].address_components.length >= 4) {
+        const city = data.results[0].address_components[1].long_name;
+        const state = data.results[0].address_components[2].long_name;
+        const country = data.results[0].address_components[3].long_name;
 
         appendLocation(city, state, country);
+        saveToLocalStorage(lat, lon);
+        initMap(lat, lon);
+      } else if (data.results[0].address_components.length >= 3) {
+        const state = data.results[0].address_components[1].long_name;
+        const country = data.results[0].address_components[2].long_name;
+
+        appendLocation(state, country);
+        saveToLocalStorage(lat, lon);
+        initMap(lat, lon);
       } else {
-        const location = data.results[0].address_components[0].long_name;
-        titleEl = document.createElement('h2');
-        titleEl.textContent = location;
-        locationAppendCont.appendChild(titleEl);
+        const state = data.results[0].address_components[0].long_name;
+
+        appendLocation(state);
+        saveToLocalStorage(lat, lon);
+        initMap(lat, lon);
       }
-      saveToLocalStorage(x, y);
+    })
+    .catch(function (err) {
+      console.log(err);
+      if (err) {
+        searchGeo('disney land');
+      }
     });
 }
 
@@ -160,23 +162,44 @@ function searchGeo(x) {
       return response.json();
     })
     .then(function (data) {
+      console.log(data);
       const lat = data.results[0].geometry.location.lat;
       const lon = data.results[0].geometry.location.lng;
-      const city = data.results[0].address_components[1].long_name;
-      const state = data.results[0].address_components[2].long_name;
-      const country = data.results[0].address_components[3].long_name;
 
-      appendLocation(city, state, country);
+      if (data.results[0].address_components.length >= 4) {
+        const city = data.results[0].address_components[1].long_name;
+        const state = data.results[0].address_components[2].long_name;
+        const country = data.results[0].address_components[3].long_name;
 
-      saveToLocalStorage(lat, lon);
-      initMap(lat, lon);
+        appendLocation(city, state, country);
+        saveToLocalStorage(lat, lon);
+        initMap(lat, lon);
+      } else if (data.results[0].address_components.length >= 3) {
+        const state = data.results[0].address_components[1].long_name;
+        const country = data.results[0].address_components[2].long_name;
+
+        appendLocation(state, country);
+        saveToLocalStorage(lat, lon);
+        initMap(lat, lon);
+      } else {
+        const state = data.results[0].address_components[0].long_name;
+
+        appendLocation(state);
+        saveToLocalStorage(lat, lon);
+        initMap(lat, lon);
+      }
+    })
+    .catch(function (err) {
+      console.log(err);
+      if (err) {
+        searchGeo('disney world');
+      }
     });
 }
 
 // map https://developers.google.com/maps/documentation/javascript/overview
 function initMap(x, y) {
   if (x && y) {
-    console.log(document.getElementById('map'));
     document.getElementById('map').innerHTML = '';
     const map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: x, lng: y },
@@ -206,32 +229,39 @@ function initMap(x, y) {
 function appendLocation(x, y, z) {
   titleEl = document.createElement('div');
   titleEl.classList.add('current-location-cont');
-  titleEl.innerHTML = `
+  if ((x, y, z)) {
+    titleEl.innerHTML = `
   <div class="location-header">
   <h2>${x},</h2>
   <h2>${y}</h2>
   </div>
-  <h2>${z}</h2>
+  <h2>${z}</h2>`;
+  } else if ((x, y)) {
+    titleEl.innerHTML = `
+  <div class="location-header">
+  <h2>${x},</h2>
+  <h2>${y}</h2>
   </div>`;
+  } else if (err) {
+    titleEl.innerHTML = `
+    <div class="location-header">
+    <h2>${"Oops! We couldn't find it."},</h2>
+    <h2>${"Here's Disney World"}</h2>
+    </div>
+    <h2>${"It's A Small World After All"}</h2>`;
+    locationAppendCont.appendChild(titleEl);
+  } else {
+    titleEl.innerHTML = `    
+    <div class="location-header">
+    <h2>${x},</h2>
+    </div>`;
+  }
   locationAppendCont.appendChild(titleEl);
 }
 
 // clear name of location for map
 function clearLocation() {
   locationAppendCont.removeChild(titleEl);
-  // if (cityEl && stateEl && countryEl) {
-  //   locationHeader.removeChild(cityEl);
-  //   locationHeader.removeChild(stateEl);
-  //   currentLocationCont.removeChild(countryEl);
-  // } else if (cityEl && !stateEl && !countryEl) {
-  //   locationHeader.removeChild(cityEl);
-  // } else if (stateEl && !cityEl && !countryEl) {
-  //   locationHeader.removeChild(stateEl);
-  // } else if (countryEl && !cityEl && !stateEl) {
-  //   currentLocationCont.removeChild(countryEl);
-
-  // not working when I select locations over and over again. I think I need to append an entire container and then remove the whole container
-  // }
 }
 
 // save selected coordinates to local storage
@@ -261,3 +291,15 @@ function getFromLocalStorage() {
 // }
 
 // getFish();
+
+// function getNasa(x,y) {
+//   fetch(
+//     `https://api.nasa.gov/planetary/earth/assets?lon=-${x}&lat=${y}&date=2018-01-01&&dim=0.10&api_key=8nssXB6HM9dQ02LP8ZPLLNxSbtsSIt4hIWisVIVG`
+//   )
+//     .then(function (response) {
+//       return response.json();
+//     })
+//     .then(function (data) {
+//       console.log(data);
+//     });
+// }
