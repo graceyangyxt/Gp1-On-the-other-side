@@ -34,6 +34,9 @@ currLocation.addEventListener('click', function () {
     lon = position.coords.longitude;
     // console.log(lat, lon);
 
+    // console.log(lat, lon);
+    // getAntipodes(lat, lon);
+    // console.log(antLat, antLon);
     initMap(lat, lon);
     reverseGeo(lat, lon);
 
@@ -189,8 +192,8 @@ function saveToLocalStorage(x, y) {
 
 // get selected coordinates from local storage
 function getFromLocalStorage() {
-  lat = parseInt(localStorage.getItem('lat'));
-  lon = parseInt(localStorage.getItem('lon'));
+  lat = JSON.parse(localStorage.getItem('lat'));
+  lon = JSON.parse(localStorage.getItem('lon'));
 }
 
 // // fetch for fish data
