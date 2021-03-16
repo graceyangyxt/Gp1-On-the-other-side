@@ -1,4 +1,5 @@
 const gKey = 'AIzaSyCRp2lbrs-v_gZuyA8HJfvw6Ih4XKXCyI4';
+const owKey = 'gzBySF4Dg5x2zcSSi7pJ';
 
 let lat;
 let lon;
@@ -99,6 +100,7 @@ antipodeBtn.addEventListener('click', function () {
   getAntipodes(lat, lon);
   clearLocation();
   reverseGeo(antLat, antLon);
+  onWater(antLat, antLon);
 });
 
 // functions
@@ -286,6 +288,18 @@ function saveToLocalStorage(x, y) {
 function getFromLocalStorage() {
   lat = JSON.parse(localStorage.getItem('lat'));
   lon = JSON.parse(localStorage.getItem('lon'));
+}
+
+// on water api - simply gives a true or false as to whether or not the coordinates are on land. function called when we select the button to view antipodal location. If google doesn't give us anything, this still tells us whether we are on land or water.
+function onWater(x, y) {
+  fetch(`https://api.onwater.io/api/v1/results/${x},${y}?access_token=${owKey}`)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      const water = data.water; // true or false in the json object - can use for conditional logic
+    });
 }
 
 // // fetch for fish data
