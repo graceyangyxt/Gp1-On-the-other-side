@@ -1,31 +1,213 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Cormorant+Infant:wght@300&display=swap');
 
+:root {
+  --primary-wht: rgb(249, 249, 249);
+  --primary-gry: rgba(175, 174, 174, 0.8);
+  --primary-blue: rgb(84, 123, 196);
+  --bg-blue: rgba(84, 123, 196, 0.8);
+  --bg-blk: rgba(51, 51, 51, 0.3);
+
+  --fnt-title: 'Shippori Mincho B1', serif;
+  --fnt-primary: 'Roboto', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background: url(../images/landing.png) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  font-family: var(--fnt-primary);
+  background-color: var(--bg-blk);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+/* nav-bar */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  padding: 0.3rem;
+}
+
+nav a {
+  text-decoration: none;
 }
 
 h1 {
-    
+  margin-left: 0.3rem;
+  font-size: 1.3em;
+  font-family: var(--fnt-title);
+  font-weight: 300;
+  color: var(--primary-wht);
 }
 
 .search-container {
-    width: 150px;
-    height: 30px;
-    border: 1px solid gray;
-    border-radius: 20px;
-    padding: 0 12px;
-    height: 100%;
-    display: inline-flex;
-    align-items: center; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  height: 100%;
+  width: 45%;
 }
 
-#search-bar {
-    margin: 0;
-    padding: 0;
-    border: none;
-    box-shadow: none;
-    height: 100%;
-    background: transparent;
+form {
+  width: 32vw;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+form input {
+  float: left;
+  width: 78%;
+  height: 1.3rem;
+  padding: 0 0.5rem;
+  font-family: var(--fnt-primary);
+  color: var(--primary-wht);
+  border: 1px solid var(--primary-gry);
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+  outline: none;
+  background: transparent;
 }
 
 .btn {
-    
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 22%;
+  height: 1.3rem;
+  border: 1px solid var(--primary-gry);
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  outline: none;
+  color: var(--primary-wht);
+  background: linear-gradient(
+    to bottom,
+    var(--primary-gry) 0%,
+    var(--bg-blk) 100%
+  );
+}
+
+.btn:hover,
+.btn:focus,
+.btn:active {
+  background: linear-gradient(
+    to bottom,
+    var(--primary-blue) 0%,
+    var(--bg-blue) 100%
+  );
+}
+
+form::after {
+  clear: both;
+}
+
+.map-marker,
+.landing-map-marker {
+  color: var(--primary-wht);
+  cursor: pointer;
+}
+
+/* landing page */
+#landing-pg {
+  position: absolute;
+  right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 10vh;
+  /* width: 30vw; */
+}
+
+.landing-search-cont {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.landing-search-cont form {
+  width: 90%;
+  margin: 0;
+  box-shadow: rgba(0, 0, 0, 0.3) 1.95px 1.95px 2.6px;
+}
+
+h2 {
+  font-family: var(--fnt-title);
+  font-weight: 300;
+  font-size: 1.3em;
+  color: var(--primary-wht);
+}
+
+/* results page */
+.results-pg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 95vw;
+  height: 95vh;
+  margin: 0 auto;
+  border-radius: 20px;
+  background-color: var(--bg-blk);
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.current-location-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.location-header {
+  display: flex;
+}
+
+.current-location-cont h2 {
+  margin: 0 0.3rem;
+}
+
+#map {
+  width: 70vw;
+  height: 50vh;
+}
+
+.hide {
+  display: none;
+}
+
+@media only screen and (min-device-width: 768px) {
+  form {
+    width: 38vw;
+  }
+
+  #landing-pg {
+    width: 23rem;
+  }
+
+  .landing-search-cont {
+    justify-content: space-evenly;
+  }
 }
