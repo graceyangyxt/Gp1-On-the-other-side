@@ -105,7 +105,12 @@ antipodeBtn.addEventListener('click', function () {
 // antipodal coordinates
 function getAntipodes(x, y) {
   antLat = x * -1;
-  antLon = y + 180;
+  if (lon >= 0) {
+    antLon = y - 180;
+  } else if (lon < 0) {
+    antLon = y + 180;
+  }
+  console.log((180 - y) * -1);
   console.log(antLat, antLon);
 }
 
@@ -131,7 +136,14 @@ function reverseGeo(x, y) {
             const state = data.results[0].address_components[1].long_name;
             const country = data.results[0].address_components[2].long_name;
 
+            // come back to this logic. => 3/4 almost the same logic
+
+            // THIS IS THE PROBLEM!!!! IF THERE IS INSUFFICIENT DATA IN THE JSON OBJECT, WE ARE NOT APPENDING ANY ELEMENTS.
             appendLocation(state, country);
+          } else if (data[2] === 'ZERO_RESULTS') {
+            const state = 'Oops!';
+
+            appendLocation(state);
           } else {
             const state = data.results[0].formatted_address;
             console.log(state);
@@ -172,6 +184,7 @@ function searchGeo(x) {
             const state = data.results[0].address_components[1].long_name;
             const country = data.results[0].address_components[2].long_name;
 
+            // check number logic
             appendLocation(state, country);
           } else {
             const state = data.results[0].formatted_address;
@@ -179,7 +192,7 @@ function searchGeo(x) {
 
             appendLocation(state);
           }
-
+          console.log(lat, lon);
           saveToLocalStorage(lat, lon);
           initMap(lat, lon);
         });
@@ -221,8 +234,8 @@ function initMap(x, y) {
 // append name of location for map
 function appendLocation(x, y, z) {
   titleEl = document.createElement('div');
-  h2El = document.createElement('h2');
   titleEl.classList.add('current-location-cont');
+  h2El = document.createElement('h2');
   if (x && y && z) {
     titleEl.innerHTML = `
   <div class="location-header">
@@ -232,11 +245,11 @@ function appendLocation(x, y, z) {
   <h2>${z}</h2>`;
     locationAppendCont.appendChild(titleEl);
     console.log(locationAppendCont.appendChild(titleEl));
-  } else if (y && z) {
+  } else if (x && y) {
     titleEl.innerHTML = `
   <div class="location-header">
-  <h2>${y},</h2>
-  <h2>${z}</h2>
+  <h2>${x},</h2>
+  <h2>${y}</h2>
   </div>`;
     locationAppendCont.appendChild(titleEl);
   } else if (x) {
