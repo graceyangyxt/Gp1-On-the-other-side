@@ -126,7 +126,13 @@ function reverseGeo(x, y) {
       } else {
         return response.json().then(function (data) {
           console.log(data);
-          if (data.results[0].address_components.length >= 4) {
+          if (data.status === "ZERO_RESULTS") {
+            const state = 'Oops!';
+            console.log(state);
+
+            appendLocation(state);
+          }
+          else if (data.results[0].address_components.length >= 4) {
             const city = data.results[0].address_components[3].long_name;
             const state = data.results[0].address_components[5].long_name;
             const country = data.results[0].address_components[6].long_name;
@@ -137,13 +143,8 @@ function reverseGeo(x, y) {
             const country = data.results[0].address_components[2].long_name;
 
             // come back to this logic. => 3/4 almost the same logic
-
             // THIS IS THE PROBLEM!!!! IF THERE IS INSUFFICIENT DATA IN THE JSON OBJECT, WE ARE NOT APPENDING ANY ELEMENTS.
             appendLocation(state, country);
-          } else if (data[2] === 'ZERO_RESULTS') {
-            const state = 'Oops!';
-
-            appendLocation(state);
           } else {
             const state = data.results[0].formatted_address;
             console.log(state);
