@@ -260,6 +260,13 @@ function getWeather (antLat, antLon) {
         console.log(data);
         var tempF = (data.main.temp - 273.15)* 1.80 + 32; 
         document.querySelector("#current-weather").innerHTML = "Current Temp: " + ((tempF.toFixed(2)+"&#8457"));
+        console.log(data.sys.country);
+        console.log(data.coord.lat);
+        console.log(data.coord.lon);
+        console.log(data.main.humidity);
+        console.log(data.main.sea_level); 
+        console.log(data.weather[0].description);
+        console.log(data.wind.speed); 
       })
     })
 };
