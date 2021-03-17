@@ -251,10 +251,10 @@ function initMap(x, y) {
   }
 }
 
-//find current temperature of antipodal location
-var APIKey="9cf609413c8a8ba8656e92d51411f9af";
+//find current weather of antipodal location
+var wKey="9cf609413c8a8ba8656e92d51411f9af";
 function getWeather (antLat, antLon) {
-  fetch ("https://api.openweathermap.org/data/2.5/weather?lat="+antLat+"&lon="+antLon+"&appid="+APIKey)
+  fetch ("https://api.openweathermap.org/data/2.5/weather?lat="+antLat+"&lon="+antLon+"&appid="+wKey)
     .then(function (response) {
       return response.json().then(function (data) {
         console.log(data);
@@ -266,10 +266,10 @@ function getWeather (antLat, antLon) {
         console.log(data.sys.country);
         console.log(data.coord.lat);
         console.log(data.coord.lon);
-        console.log(data.main.humidity);
-        console.log(data.main.sea_level); 
+        console.log(data.main.humidity + "%");
+        console.log(data.main.sea_level + "m"); 
         console.log(data.weather[0].description);
-        console.log(data.wind.speed); 
+        console.log(data.wind.speed + "MPH"); 
       })
     })
 };
