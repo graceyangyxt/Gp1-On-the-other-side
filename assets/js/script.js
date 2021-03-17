@@ -260,6 +260,9 @@ function getWeather (antLat, antLon) {
         console.log(data);
         var tempF = (data.main.temp - 273.15)* 1.80 + 32; 
         document.querySelector("#current-weather").innerHTML = "Current Temp: " + ((tempF.toFixed(2)+"&#8457"));
+        var wIcon= data.weather[0].icon;
+        var iconurl="https://openweathermap.org/img/wn/"+wIcon +"@2x.png";
+        document.querySelector("#icon").innerHTML= "<img src="+iconurl+">"; 
         console.log(data.sys.country);
         console.log(data.coord.lat);
         console.log(data.coord.lon);
