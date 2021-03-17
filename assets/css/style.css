@@ -18,30 +18,45 @@
   padding: 0;
   box-sizing: border-box;
 }
-
-html {
+/* ----------- CHANGES ----------- */
+/* html {
   background: url(../images/landing-img.png) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-}
+} */
 
 body {
   height: 100vh;
   width: 100vw;
+  background-image: url("../images/background-img.jpeg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
   font-family: var(--fnt-primary);
   background-color: var(--bg-blk);
+  -o-border-image: ;
+}
+
+.earth-map {
+  width: 48%;
+  margin-left: 5rem; 
 }
 
 .wrapper {
   display: flex;
+  /* position: relative; */
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;  */
+  /* align-items: center; */
   height: 80vh;
 }
 
+/* .info-container {
+} */
+/* ----------- CHANGES ----------- */
 /* nav-bar */
 nav {
   display: flex;
