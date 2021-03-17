@@ -259,7 +259,7 @@ function getWeather (antLat, antLon) {
       return response.json().then(function (data) {
         console.log(data);
         var tempF = (data.main.temp - 273.15)* 1.80 + 32; 
-        document.querySelector("#current-weather").innerHTML = "Current Temp: " + ((tempF.toFixed(2)+"&#8457"));
+        document.querySelector("#current-weather").innerHTML = "Current Temp: " + ((tempF.toFixed(2)) + "°F");
         var wIcon= data.weather[0].icon;
         var iconurl="https://openweathermap.org/img/wn/"+wIcon +"@2x.png";
         document.querySelector("#icon").innerHTML= '<img src=' +iconurl+ ' width="30px"' + ' height="30px"' + ">"; 
