@@ -21,6 +21,11 @@ const landingSubmitBtn = document.querySelector('#landing-search-btn');
 const antipodeBtn = document.querySelector('#antipdal-btn');
 const locationAppendCont = document.querySelector('#location-append');
 let titleEl;
+// elements for country data from rest countries
+const countryName = document.querySelector('.country');
+const flag = document.querySelector('.flag');
+const timeZone = document.querySelector('.timezone');
+const language = document.querySelector('.language');
 
 // pages
 const landingPg = document.querySelector('#landing-pg');
@@ -153,6 +158,12 @@ async function reverseGeo(x, y) {
                 return obj.types.includes('country');
               })[0]?.long_name;
 
+              const countryShort = addressComp.filter(function (obj) {
+                return obj.types.includes('country');
+              })[0]?.short_name;
+              console.log(countryShort);
+              getCountries(countryShort);
+
               let cityEl;
 
               if (locality) {
@@ -193,24 +204,54 @@ function searchGeo(x) {
           const lat = data.results[0].geometry.location.lat;
           const lon = data.results[0].geometry.location.lng;
 
-          if (data.results[0].address_components.length >= 4) {
-            const city = data.results[0].address_components[1].long_name;
-            const state = data.results[0].address_components[2].long_name;
-            const country = data.results[0].address_components[3].long_name;
-
-            appendLocation(city, state, country);
-          } else if (data.results[0].address_components.length >= 3) {
-            const state = data.results[0].address_components[1].long_name;
-            const country = data.results[0].address_components[2].long_name;
-
-            // check number logic
-            appendLocation(state, country);
-          } else {
-            const state = data.results[0].formatted_address;
-            console.log(state);
-
-            appendLocation(state);
+          if (data.status === 'ZERO_RESULTS') {
+            appendLocation('Shit');
+            return;
           }
+
+          onWater(lat, lon).then(function (bool) {
+            const isWater = bool;
+            console.log(isWater);
+
+            if (!isWater) {
+              const addressComp = data.results[0].address_components;
+
+              const locality = addressComp.filter(function (obj) {
+                return obj.types.includes('locality');
+              })[0]?.long_name;
+              const subLocality = addressComp.filter(function (obj) {
+                return obj.types.includes('sublocality');
+              })[0]?.long_name;
+              const adminLvlOne = addressComp.filter(function (obj) {
+                return obj.types.includes('administrative_area_level_1');
+              })[0]?.long_name;
+              const country = addressComp.filter(function (obj) {
+                return obj.types.includes('country');
+              })[0]?.long_name;
+
+              const countryShort = addressComp.filter(function (obj) {
+                return obj.types.includes('country');
+              })[0]?.short_name;
+              console.log(countryShort);
+              getCountries(countryShort);
+
+              let cityEl;
+
+              if (locality) {
+                cityEl = locality;
+              } else if (subLocality && !locality) {
+                cityEl = subLocality;
+              }
+              appendLocation(cityEl, adminLvlOne, country);
+            } else {
+              const addressComp = data.results[0].address_components;
+              const nature = addressComp.filter(function (obj) {
+                return obj.types.includes('natural_feature');
+              })[0]?.long_name;
+              console.log(nature);
+              appendLocation(nature);
+            }
+          });
           console.log(lat, lon);
           saveToLocalStorage(lat, lon);
           initMap(lat, lon);
@@ -303,6 +344,26 @@ function onWater(x, y) {
         reject(err);
       });
   });
+}
+
+// countries data https://restcountries.eu/
+function getCountries(x) {
+  fetch(`https://restcountries.eu/rest/v2/alpha/${x}`)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      countryName.textContent = `${data.name}, ${data.alpha2Code}`;
+      flag.src = data.flag;
+      data.timezones.forEach(function (element) {
+        timeZone.innerHTML = `${element}, `;
+        console.log(element);
+      });
+    })
+    .catch(function (err) {
+      console.log('Error:', err);
+    });
 }
 
 // // fetch for fish data
