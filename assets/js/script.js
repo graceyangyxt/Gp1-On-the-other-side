@@ -117,7 +117,7 @@ function getAntipodes(x, y) {
 }
 
 // fetch api using coordinates - https://developers.google.com/maps/documentation/geocoding/overview#geocoding-requests
-function reverseGeo(x, y) {
+async function reverseGeo(x, y) {
   fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${x},${y}&key=${gKey}`
   )
@@ -129,33 +129,47 @@ function reverseGeo(x, y) {
         return response.json().then(function (data) {
           console.log(data);
           if (data.status === 'ZERO_RESULTS') {
-            const state = 'Oops!';
-            console.log(state);
-
-            appendLocation(state);
-          } else if (data.results[0].address_components.length > 4) {
-            const city = data.results[0].address_components[3].long_name;
-            const state = data.results[0].address_components[5].long_name;
-            const country = data.results[0].address_components[6].long_name;
-
-            appendLocation(city, state, country);
-          } else if (
-            data.results[0].address_components.length <= 4 &&
-            data.results[0].address_components.length > 2
-          ) {
-            const state = data.results[0].address_components[2].long_name;
-            const country = data.results[0].address_components[3].long_name;
-
-            // come back to this logic. => 3/4 almost the same logic
-            // THIS IS THE PROBLEM!!!! IF THERE IS INSUFFICIENT DATA IN THE JSON OBJECT, WE ARE NOT APPENDING ANY ELEMENTS.
-            appendLocation(state, country);
-          } else {
-            const state = data.results[0].address_components[0].long_name;
-            console.log(state);
-
-            appendLocation(state);
+            appendLocation('Shit');
+            return;
           }
 
+          onWater(x, y).then(function (bool) {
+            const isWater = bool;
+            console.log(isWater);
+
+            if (!isWater) {
+              const addressComp = data.results[0].address_components;
+
+              const locality = addressComp.filter(function (obj) {
+                return obj.types.includes('locality');
+              })[0]?.long_name;
+              const subLocality = addressComp.filter(function (obj) {
+                return obj.types.includes('sublocality');
+              })[0]?.long_name;
+              const adminLvlOne = addressComp.filter(function (obj) {
+                return obj.types.includes('administrative_area_level_1');
+              })[0]?.long_name;
+              const country = addressComp.filter(function (obj) {
+                return obj.types.includes('country');
+              })[0]?.long_name;
+
+              let cityEl;
+
+              if (locality) {
+                cityEl = locality;
+              } else if (subLocality && !locality) {
+                cityEl = subLocality;
+              }
+              appendLocation(cityEl, adminLvlOne, country);
+            } else {
+              const addressComp = data.results[0].address_components;
+              const nature = addressComp.filter(function (obj) {
+                return obj.types.includes('natural_feature');
+              })[0]?.long_name;
+              console.log(nature);
+              appendLocation(nature);
+            }
+          });
           saveToLocalStorage(lat, lon);
           initMap(x, y);
         });
@@ -240,33 +254,14 @@ function initMap(x, y) {
 function appendLocation(x, y, z) {
   titleEl = document.createElement('div');
   titleEl.classList.add('current-location-cont');
-  h2El = document.createElement('h2');
-  if (x && y && z) {
-    titleEl.innerHTML = `
+  titleEl.innerHTML = `
   <div class="location-header">
-  <h2>${x},</h2>
-  <h2>${y}</h2>
+  <h2>${x ? x : ''},</h2>
+  <h2>${y ? y : ''}</h2>
   </div>
-  <h2>${z}</h2>`;
-    locationAppendCont.appendChild(titleEl);
-    console.log(locationAppendCont.appendChild(titleEl));
-  } else if (x && y) {
-    titleEl.innerHTML = `
-  <div class="location-header">
-  <h2>${x},</h2>
-  <h2>${y}</h2>
-  </div>`;
-    locationAppendCont.appendChild(titleEl);
-  } else if (x) {
-    titleEl.appendChild(h2El);
-    h2El.textContent = x;
-    // titleEl.innerHTML = `
-    // <div class="location-header>
-    // <h2>${x}</h2>
-    // </div>`;
-    locationAppendCont.appendChild(titleEl);
-    console.log(locationAppendCont.appendChild(titleEl));
-  }
+  <h2>${z ? z : ''}</h2>`;
+  locationAppendCont.appendChild(titleEl);
+  console.log(locationAppendCont.appendChild(titleEl));
 }
 
 // clear name of location for map
@@ -290,16 +285,24 @@ function getFromLocalStorage() {
   lon = JSON.parse(localStorage.getItem('lon'));
 }
 
-// on water api - simply gives a true or false as to whether or not the coordinates are on land. function called when we select the button to view antipodal location. If google doesn't give us anything, this still tells us whether we are on land or water.
+// on water api - https://onwater.io/ - simply gives a true or false as to whether or not the coordinates are on land. function called when we select the button to view antipodal location. If google doesn't give us anything, this still tells us whether we are on land or water.
 function onWater(x, y) {
-  fetch(`https://api.onwater.io/api/v1/results/${x},${y}?access_token=${owKey}`)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data);
-      const water = data.water; // true or false in the json object - can use for conditional logic
-    });
+  return new Promise(function (resolve, reject) {
+    fetch(
+      `https://api.onwater.io/api/v1/results/${x},${y}?access_token=${owKey}`
+    )
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        const water = data.water; // true or false in the json object - can use for conditional logic
+        console.log('we are drowning: ' + water);
+        resolve(water);
+      })
+      .catch(function (err) {
+        reject(err);
+      });
+  });
 }
 
 // // fetch for fish data
