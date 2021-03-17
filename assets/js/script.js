@@ -262,7 +262,7 @@ function getWeather (antLat, antLon) {
         document.querySelector("#current-weather").innerHTML = "Current Temp: " + ((tempF.toFixed(2)+"&#8457"));
         var wIcon= data.weather[0].icon;
         var iconurl="https://openweathermap.org/img/wn/"+wIcon +"@2x.png";
-        document.querySelector("#icon").innerHTML= "<img src="+iconurl+">"; 
+        document.querySelector("#icon").innerHTML= '<img src=' +iconurl+ ' width="30px"' + ' height="30px"' + ">"; 
         console.log(data.sys.country);
         console.log(data.coord.lat);
         console.log(data.coord.lon);

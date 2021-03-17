@@ -63,6 +63,14 @@ h1 {
   color: var(--primary-wht);
 }
 
+#current-weather{
+  float:left;
+}
+
+#icon {
+  float:right;
+}
+
 .search-container {
   display: flex;
   justify-content: space-between;
