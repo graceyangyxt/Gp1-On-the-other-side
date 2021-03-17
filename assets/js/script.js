@@ -101,6 +101,7 @@ antipodeBtn.addEventListener('click', function () {
   clearLocation();
   reverseGeo(antLat, antLon);
   onWater(antLat, antLon);
+  getWeather(antLat, antLon); 
 });
 
 // functions
@@ -249,6 +250,19 @@ function initMap(x, y) {
     map.setTilt(45);
   }
 }
+
+//find current temperature of antipodal location
+var APIKey="9cf609413c8a8ba8656e92d51411f9af";
+function getWeather (antLat, antLon) {
+  fetch ("https://api.openweathermap.org/data/2.5/weather?lat="+antLat+"&lon="+antLon+"&appid="+APIKey)
+    .then(function (response) {
+      return response.json().then(function (data) {
+        console.log(data);
+        var tempF = (data.main.temp - 273.15)* 1.80 + 32; 
+        document.querySelector("#current-weather").innerHTML = "Current Temp: " + ((tempF.toFixed(2)+"&#8457"));
+      })
+    })
+};
 
 // append name of location for map
 function appendLocation(x, y, z) {
