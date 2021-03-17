@@ -4,22 +4,22 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>The Other Side</title>
-    <link rel="shortcut icon" href="./assets/images/fav-earth.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="./assets/images/fav-earth.svg" type="image/x-icon"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel=“stylesheet” href=“https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css”/>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous"/> -->
     <link rel="stylesheet" href="./assets/css/style.css"/>
+    <title>The Other Side</title>
   </head>
   <body>
     <header>
       <nav>
         <!-- nav bar with title, maybe search bar once we get onto the second page -- add a link to github repo -->
-        <a href="index.html">
-          <h1>The Other Side</h1>
-        </a>
-        <!-- search-container needed, hide needed -->
-        <div class="search-container hide"> 
+        <div class="nav-wrapper">
+          <a href="index.html">
+            <h1>The Other Side</h1>
+          </a>
+          <!-- search-container needed, hide needed -->
+          <div class="search-container hide">
           <!-- map-marker class needed -->
           <i class="material-icons map-marker">location_on</i>
           <!-- form needed -->
@@ -28,60 +28,63 @@
             <input type="text" placeholder="Search" id="search-bar"/>
             <!-- button needed - #search-bar is the target in the js file -->
             <button type="submit" class="btn" id="search-btn"><i class="material-icons">search</i></button>
-          <!-- <button type="submit" class="btn" id="randomize">Randomize</button> -->
+            <!-- <button type="submit" class="btn" id="randomize">Randomize</button> -->
           </form>
+          </div>
         </div>
       </nav>
     </header>
 
-    <div class="wrapper">
-      <!-- landing page needed for toggling visibility of pages -->
-      <div id="landing-pg">
-        <h2>Where Am I?</h2>
+    <main class="container">
+      <div class="row wrapper">
+        <div class="col s12 m3 l3">
+          <img class="responsive-img earth-map" src="./assets/images/earth-globe-img.png" alt="Image of Earth Globe"/>
+        </div>
+        <!-- landing page needed for toggling visibility of pages -->
+        <section id="landing-pg" class="col s12 m3 l3">
+          <h2>Where Am I?</h2>
           <div class="landing-search-cont">
             <!-- landing-map-marker class needed -->
             <i class="material-icons landing-map-marker">location_on</i>
             <form>
               <!-- #landing-search-bar is needed -->
               <input type="text" placeholder="Search" id="landing-search-bar"/>
-          
-            <!-- #landing-search-btn needed -->
+              <!-- #landing-search-btn needed -->
               <button type="submit" class="btn" id="landing-search-btn"><i class="material-icons">search</i></button>
             </form>
             <!-- <button type="submit" class="btn" id="landing-randomize">Randomize</button> -->
           </div>
+        </section>
+        <!-- results class needed -->
+        <!-- rechcek grid (col s12 m3 l3) -->
+        <section class="col s12 m3 l3 results-pg hide">
+          <!-- VERY IMPORTANT WE  -->
+          <div id="map"></div>
+          <!-- #location-append needed -->
+          <div id="location-append">
+            <!-- Appended Locations Go Here -->
+          </div>
+          <h3>What's on the other side?</h3>
+          <!-- #antipodal-btn needed -->
+          <button type="button" class="btn" id="antipdal-btn">Find out</button>
+        </section>
+        <!-- Country Facts Go Here -->
+        <section class="col s12 m3 l3 info-container">
+          <h2>Country Facts</h2>
+          <ul>
+            <li>Country</li>
+            <li><img class="responsive-img" src="" alt="Image of Flag"/>Image Link Goes Here</li>
+            <li>Timezone</li>
+            <li>Languages</li>
+            <li>LatLong</li>
+          </ul>
+        </section>
       </div>
+    </main>
 
-    <!-- results class needed -->
-    <section class="results-pg hide">
-      <!-- VERY IMPORTANT WE  -->
-      <div id="map"></div>
-      <!-- #location-append needed -->
-      <div id="location-append">
-      </div>
-      <h3>What's on the other side?</h3>
-      <!-- #antipodal-btn needed -->
-      <button type="button" class="btn" id="antipdal-btn">Find out</button>
-      
-    </section>
-
-    <div class = "info-container ">
-      <h2>Country Facts</h2>
-      <ul>
-        <li>Country</li>
-        <li><img src =""></li>
-        <li>Timezone</li>
-        <li>Languages</li>
-        <li>LatLong</li>
-      </ul>
-    </div>
-    </div>
     <footer></footer>
+    
     <script src="./assets/js/script.js"></script>
-
-    <script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRp2lbrs-v_gZuyA8HJfvw6Ih4XKXCyI4&callback=initMap">
-  </script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRp2lbrs-v_gZuyA8HJfvw6Ih4XKXCyI4&callback=initMap"></script>
   </body>
-</html>
 </html>
