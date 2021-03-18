@@ -162,7 +162,7 @@ async function reverseGeo(x, y) {
                 return obj.types.includes('country');
               })[0]?.short_name;
               console.log(countryShort);
-              getCountries(countryShort);
+              // getCountries(countryShort);
 
               let cityEl;
 
