@@ -308,7 +308,7 @@ function initMap(x, y) {
     const map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: x, lng: y },
       zoom: 10,
-      mapTypeId: 'satellite',
+      mapTypeId: 'roadmap',
       mapTypeControl: false,
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
