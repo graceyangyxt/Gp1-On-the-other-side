@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="shortcut icon" href="./assets/images/fav-earth.svg" type="image/x-icon"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href=“https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Roboto:wght@100;300;400&display=swap” rel=“stylesheet”>
     <link rel=“stylesheet” href=“https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css”/>
     <link rel="stylesheet" href="./assets/css/style.css"/>
     <title>The Other Side</title>
@@ -14,19 +15,15 @@
     <header>
       <nav>
         <!-- nav bar with title, maybe search bar once we get onto the second page -- add a link to github repo -->
-        <a href="index.html">
-          <h1>The Other Side</h1>
-        </a>
-        <div id = "weather-container"> 
-          <h2 id = "current-weather"></h2>
-          <div id = "icon"></div>
-        </div>
-        <!-- search-container needed, hide needed -->
-        <div class="search-container hide"> 
-        <div class="nav-wrapper">
+        
           <a href="index.html">
             <h1>The Other Side</h1>
           </a>
+          <div id = "weather-container"> 
+            <h2 id = "current-weather"></h2>
+            <div id = "icon"></div>
+          </div>
+
           <!-- search-container needed, hide needed -->
           <div class="search-container hide">
           <!-- map-marker class needed -->
@@ -40,14 +37,13 @@
             <!-- <button type="submit" class="btn" id="randomize">Randomize</button> -->
           </form>
           </div>
-        </div>
       </nav>
     </header>
 
     <main class="container">
       <div class="row wrapper">
         <div class="col s12 m3 l3">
-          <img class="responsive-img earth-map" src="./assets/images/earth-globe-img.png" alt="Image of Earth Globe"/>
+          <img class="responsive-img earth-map" src="./assets/images/earth-img.png" alt="Image of Earth Globe"/>
         </div>
         <!-- landing page needed for toggling visibility of pages -->
         <section id="landing-pg" class="col s12 m3 l3">
@@ -66,19 +62,40 @@
         </section>
         <!-- results class needed -->
         <!-- rechcek grid (col s12 m3 l3) -->
-        <section class="col s12 m3 l3 results-pg hide">
-          <!-- VERY IMPORTANT WE  -->
-          <div id="map"></div>
+
+        <!--CHANGE HERE-->
+        <section class="results-pg hide">
+          <!-- VERY IMPORTANT WE  --> 
+          <section class="col s12 m6 l6 show-round-map">
+               <div class="responsive-img" id="map"></div>
           <!-- #location-append needed -->
-          <div id="location-append">
+          </section>
+          <section class="col s12 m6 l6">
+            <section class="col s12 m3 l3 info-container" >
+              <div id="location-append">
+                <h3>You are at</h3>
             <!-- Appended Locations Go Here -->
-          </div>
-          <h3>What's on the other side?</h3>
-          <!-- #antipodal-btn needed -->
-          <button type="button" class="btn" id="antipdal-btn">Find out</button>
+             </div>
+              <div>
+                <h2>Country Facts</h2>
+                  <ul class="country-facts-list">
+                    <li>Country</li>
+                    <li><img class="responsive-img" src="" alt="Image of Flag"/>Image Link Goes Here</li>
+                    <li>Timezone</li>
+                    <li>Languages</li>
+                    <li>LatLong</li>
+                  </ul>
+              </div>
+             <!-- #antipodal-btn needed -->
+             <button type="button" class="btn" id="antipdal-btn">What's on the other side?</button>
+            </section>
+               
+          </section>
+          <!-- <h3>What's on the other side?</h3> -->         
         </section>
+
         <!-- Country Facts Go Here -->
-        <section class="col s12 m3 l3 info-container">
+        <!-- <section class="col s12 m3 l3 info-container">
           <h2>Country Facts</h2>
           <ul>
             <li>Country</li>
@@ -87,9 +104,10 @@
             <li>Languages</li>
             <li>LatLong</li>
           </ul>
-        </section>
+        </section> -->
       </div>
     </main>
+
 
     <footer></footer>
     

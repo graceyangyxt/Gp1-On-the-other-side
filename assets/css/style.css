@@ -7,7 +7,8 @@
   --bg-blue: rgba(84, 123, 196, 0.8);
   --bg-blk: rgba(51, 51, 51, 0.3);
 
-  --fnt-title: 'Shippori Mincho B1', serif;
+  /* --fnt-title: 'Shippori Mincho B1', serif; */
+  --fnt-title: ‘Montserrat’, sans-serif;
   --fnt-primary: 'Roboto', sans-serif;
 }
 
@@ -41,7 +42,7 @@ body {
 }
 
 .earth-map {
-  width: 48%;
+  width: 43vw;
   margin-left: 5rem; 
 }
 
@@ -58,6 +59,7 @@ body {
 } */
 /* ----------- CHANGES ----------- */
 /* nav-bar */
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -88,11 +90,13 @@ h1 {
 
 .search-container {
   display: flex;
-  justify-content: space-between;
+  justify-content:space-between;
   align-items: center;
   padding: 0 12px;
   height: 100%;
   width: 45%;
+  
+  
 }
 
 form {
@@ -156,19 +160,23 @@ form::after {
 /* landing page */
 #landing-pg {
   position: absolute;
-  right: 0.5rem;
+  right: 5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  /* align-items: center; */
   height: 10vh;
+  margin-top: 20%;
   /* width: 30vw; */
 }
 
 .landing-search-cont {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
   padding: 0 12px;
+  margin-top: 5px;
+  
 }
 
 .landing-search-cont form {
@@ -182,22 +190,53 @@ h2 {
   font-weight: 300;
   font-size: 1.3em;
   color: var(--primary-wht);
+  text-align: center;
 }
 
+h3{
+  font-family: var(--fnt-title);
+  font-weight: 300;
+  font-size: 0.9em;
+  color: var(--primary-wht);
+  text-align: center;
+  padding: 5px 0;
+}
 /* results page */
 .results-pg {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-evenly;
   align-items: center;
-  width: 95vw;
-  height: 95vh;
+  width: 90rem;
+  /* height: 70vh;  */
+  margin: 0 auto;
+  /* border-radius: 20px;
+  background-color: var(--bg-blk); */
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.show-round-map{
+  display: flex;
+  flex-direction: row;
+
+}
+.info-container{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  justify-content: space-evenly;
+  width: 35vw;
+  height: 65vh;
   margin: 0 auto;
   border-radius: 20px;
   background-color: var(--bg-blk);
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
-
+.country-facts-list{
+  color: var(--primary-wht);
+  align-content: center;
+}
 .current-location-cont {
   display: flex;
   flex-direction: column;
@@ -212,13 +251,26 @@ h2 {
   margin: 0 0.3rem;
 }
 
+/* .show-round-map{
+  width: 200px;
+  height: 200px; */
+/* } */
 #map {
-  width: 70vw;
-  height: 50vh;
+  width: 45vw;
+  height: 45vw;
+  border-radius: 50%;
+  /* max-width: 300px; */
 }
 
 .hide {
   display: none;
+}
+
+#current-weather{
+  float:left;
+}
+#icon {
+  float:right;
 }
 
 @media only screen and (min-device-width: 768px) {
