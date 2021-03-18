@@ -1,5 +1,7 @@
 const gKey = 'AIzaSyCRp2lbrs-v_gZuyA8HJfvw6Ih4XKXCyI4';
 const owKey = 'gzBySF4Dg5x2zcSSi7pJ';
+const wKey = '9cf609413c8a8ba8656e92d51411f9af';
+const timeKey = '7b4641be27464367961f21d52f6bdbeb';
 
 let lat;
 let lon;
@@ -18,12 +20,29 @@ const landingCurrLoc = document.querySelector('.landing-map-marker');
 const landingSubmitBtn = document.querySelector('#landing-search-btn');
 
 // results page elements
-const antipodeBtn = document.querySelector('#antipdal-btn');
+const antipodeBtn = document.querySelector('#antipodal-btn');
 const locationAppendCont = document.querySelector('#location-append');
+const timeEl = document.querySelector('.time');
+const tempEl = document.querySelector('.temp');
+const degToggle = document.querySelector('#degToggle');
+const toggleF = document.querySelector('#toggleF');
+const toggleC = document.querySelector('#toggleC');
+const degMeasurement = document.querySelector('#degMeasurement');
+const deg = '\xB0';
+let unit = degMeasurement.dataset.unit;
 let titleEl;
 
+// elements for country data from rest countries
+const countryEl = document.querySelector('.countryEl');
+const flagEl = document.querySelector('.flagEl');
+const capitalEl = document.querySelector('.capitalEl');
+const languageEl = document.querySelector('.languageEl');
+const currencyEl = document.querySelector('.currencyEl');
+const populationEl = document.querySelector('.populationEl');
+const bordersEl = document.querySelector('.bordersEl');
+
 // pages
-const landingPg = document.querySelector('#landing-pg');
+const landingPg = document.querySelector('.landing-pg');
 const resultsPg = document.querySelector('.results-pg');
 
 // event listeners
@@ -36,6 +55,7 @@ currLocation.addEventListener('click', function () {
 
     clearLocation();
     reverseGeo(lat, lon);
+    getWeather(lat, lon);
 
     // toggles visibility for the second page successfully
     if (resultsPg.classList.contains('hide')) {
@@ -66,12 +86,15 @@ landingCurrLoc.addEventListener('click', function () {
 
     clearLocation();
     reverseGeo(lat, lon);
+    getWeather(lat, lon);
 
     if (resultsPg.classList.contains('hide')) {
       resultsPg.classList.remove('hide');
+      landingPg.classList.add('hide');
     }
     if (searchCont.classList.contains('hide')) {
-      searchCont.classList.remove('hide'); // toggles visibility of navbar
+      searchCont.classList.remove('hide');
+      landingPg.classList.add('hide');
     }
   });
 });
@@ -88,20 +111,37 @@ landingSubmitBtn.addEventListener('click', function (e) {
 
   if (resultsPg.classList.contains('hide')) {
     resultsPg.classList.remove('hide');
+    landingPg.classList.add('hide');
   }
   if (searchCont.classList.contains('hide')) {
-    searchCont.classList.remove('hide'); // toggles visibility of navbar
+    searchCont.classList.remove('hide');
+    landingPg.classList.add('hide');
   }
 });
 
 // ** results page **
+// toggle farenheight/celcius and set data-unit attribute
+degToggle.addEventListener('change', function () {
+  if (this.checked) {
+    degMeasurement.setAttribute('data-unit', 'imperial');
+    toggleF.textContent = 'F' + deg;
+    toggleC.textContent = '';
+  } else {
+    degMeasurement.setAttribute('data-unit', 'metric');
+    toggleC.textContent = 'C' + deg;
+    toggleF.textContent = '';
+  }
+  unit = degMeasurement.getAttribute('data-unit');
+  getWeather(lat, lon);
+});
+
 antipodeBtn.addEventListener('click', function () {
   getFromLocalStorage(lat, lon);
   getAntipodes(lat, lon);
   clearLocation();
   reverseGeo(antLat, antLon);
   onWater(antLat, antLon);
-  getWeather(antLat, antLon); 
+  getWeather(antLat, antLon);
 });
 
 // functions
@@ -113,7 +153,6 @@ function getAntipodes(x, y) {
   } else if (lon < 0) {
     antLon = y + 180;
   }
-  console.log((180 - y) * -1);
   console.log(antLat, antLon);
 }
 
@@ -128,7 +167,7 @@ async function reverseGeo(x, y) {
         console.log('damn');
       } else {
         return response.json().then(function (data) {
-          console.log(data);
+          // console.log(data);
           if (data.status === 'ZERO_RESULTS') {
             appendLocation('Shit');
             return;
@@ -136,7 +175,7 @@ async function reverseGeo(x, y) {
 
           onWater(x, y).then(function (bool) {
             const isWater = bool;
-            console.log(isWater);
+            // console.log(isWater);
 
             if (!isWater) {
               const addressComp = data.results[0].address_components;
@@ -154,6 +193,12 @@ async function reverseGeo(x, y) {
                 return obj.types.includes('country');
               })[0]?.long_name;
 
+              const countryShort = addressComp.filter(function (obj) {
+                return obj.types.includes('country');
+              })[0]?.short_name;
+              // console.log(countryShort);
+              getCountries(countryShort);
+
               let cityEl;
 
               if (locality) {
@@ -167,12 +212,13 @@ async function reverseGeo(x, y) {
               const nature = addressComp.filter(function (obj) {
                 return obj.types.includes('natural_feature');
               })[0]?.long_name;
-              console.log(nature);
+              // console.log(nature);
               appendLocation(nature);
             }
           });
           saveToLocalStorage(lat, lon);
           initMap(x, y);
+          getTime(x, y);
         });
       }
     })
@@ -194,27 +240,59 @@ function searchGeo(x) {
           const lat = data.results[0].geometry.location.lat;
           const lon = data.results[0].geometry.location.lng;
 
-          if (data.results[0].address_components.length >= 4) {
-            const city = data.results[0].address_components[1].long_name;
-            const state = data.results[0].address_components[2].long_name;
-            const country = data.results[0].address_components[3].long_name;
-
-            appendLocation(city, state, country);
-          } else if (data.results[0].address_components.length >= 3) {
-            const state = data.results[0].address_components[1].long_name;
-            const country = data.results[0].address_components[2].long_name;
-
-            // check number logic
-            appendLocation(state, country);
-          } else {
-            const state = data.results[0].formatted_address;
-            console.log(state);
-
-            appendLocation(state);
+          if (data.status === 'ZERO_RESULTS') {
+            appendLocation('Shit');
+            return;
           }
-          console.log(lat, lon);
+
+          onWater(lat, lon).then(function (bool) {
+            const isWater = bool;
+            // console.log(isWater);
+
+            if (!isWater) {
+              const addressComp = data.results[0].address_components;
+
+              const locality = addressComp.filter(function (obj) {
+                return obj.types.includes('locality');
+              })[0]?.long_name;
+              const subLocality = addressComp.filter(function (obj) {
+                return obj.types.includes('sublocality');
+              })[0]?.long_name;
+              const adminLvlOne = addressComp.filter(function (obj) {
+                return obj.types.includes('administrative_area_level_1');
+              })[0]?.long_name;
+              const country = addressComp.filter(function (obj) {
+                return obj.types.includes('country');
+              })[0]?.long_name;
+
+              const countryShort = addressComp.filter(function (obj) {
+                return obj.types.includes('country');
+              })[0]?.short_name;
+              // console.log(countryShort);
+              getCountries(countryShort);
+
+              let cityEl;
+
+              if (locality) {
+                cityEl = locality;
+              } else if (subLocality && !locality) {
+                cityEl = subLocality;
+              }
+              appendLocation(cityEl, adminLvlOne, country);
+            } else {
+              const addressComp = data.results[0].address_components;
+              const nature = addressComp.filter(function (obj) {
+                return obj.types.includes('natural_feature');
+              })[0]?.long_name;
+              // console.log(nature);
+              appendLocation(nature);
+            }
+          });
+          // console.log(lat, lon);
           saveToLocalStorage(lat, lon);
           initMap(lat, lon);
+          getWeather(lat, lon);
+          getTime(lat, lon);
         });
       }
     })
@@ -252,40 +330,30 @@ function initMap(x, y) {
 }
 
 //find current weather of antipodal location
-var wKey="9cf609413c8a8ba8656e92d51411f9af";
-function getWeather (antLat, antLon) {
-  fetch ("https://api.openweathermap.org/data/2.5/weather?lat="+antLat+"&lon="+antLon+"&appid="+wKey)
-    .then(function (response) {
-      return response.json().then(function (data) {
+function getWeather(x, y) {
+  fetch(
+    `https://api.openweathermap.org/data/2.5/onecall?lat=${x}&lon=${y}&units=${unit}&exclude=minutely&appid=${wKey}`
+  ).then(function (response) {
+    return response
+      .json()
+      .then(function (data) {
         console.log(data);
-        var tempF = (data.main.temp - 273.15)* 1.80 + 32; 
-        document.querySelector("#current-weather").innerHTML = "Current Temp: " + ((tempF.toFixed(2)) + "°F");
-        var wIcon= data.weather[0].icon;
-        var iconurl="https://openweathermap.org/img/wn/"+wIcon +"@2x.png";
-        document.querySelector("#icon").innerHTML= '<img src=' +iconurl+ ' width="30px"' + ' height="30px"' + ">"; 
-        console.log(data.sys.country);
-        console.log(data.coord.lat);
-        console.log(data.coord.lon);
-        console.log(data.main.humidity + "%");
-        console.log(data.main.sea_level + "m"); 
-        console.log(data.weather[0].description);
-        console.log(data.wind.speed + "MPH"); 
+        const temp = Math.floor(data.current.temp);
+        tempEl.textContent = temp + deg;
       })
-    })
-};
+      .catch(function (err) {
+        console.log(err);
+      });
+  });
+}
 
 // append name of location for map
 function appendLocation(x, y, z) {
   titleEl = document.createElement('div');
   titleEl.classList.add('current-location-cont');
   titleEl.innerHTML = `
-  <div class="location-header">
-  <h2>${x ? x : ''},</h2>
-  <h2>${y ? y : ''}</h2>
-  </div>
-  <h2>${z ? z : ''}</h2>`;
+  <h2>${x ? x : ''}  ${y ? y : ''}  ${z ? z : ''}</h2>`;
   locationAppendCont.appendChild(titleEl);
-  console.log(locationAppendCont.appendChild(titleEl));
 }
 
 // clear name of location for map
@@ -329,28 +397,49 @@ function onWater(x, y) {
   });
 }
 
-// // fetch for fish data
-// function getFish() {
-//   fetch('https://fishbase.ropensci.org/species?offset=100')
-//     .then(function (response) {
-//       console.log(response);
-//       return response.json();
-//     })
-//     .then(function (data) {
-//       console.log(data);
-//     });
-// }
+// countries data https://restcountries.eu/
+function getCountries(x) {
+  fetch(`https://restcountries.eu/rest/v2/alpha/${x}`)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      countryEl.textContent = `${data.name}, ${data.alpha2Code}`;
+      flagEl.src = data.flag;
+      capitalEl.textContent = data.capital;
+      languageEl.textContent = data.languages[0].name;
+      currencyEl.textContent = `${data.currencies[0].code}, ${data.currencies[0].symbol}`;
+      populationEl.textContent = data.population;
 
-// getFish();
+      bordersEl.textContent = '';
+      data.borders.forEach(function (element) {
+        const borders = document.createElement('div');
+        borders.textContent = element;
+        bordersEl.appendChild(borders);
+      });
+    })
+    .catch(function (err) {
+      console.log('Error:', err);
+    });
+}
 
-// function getNasa(x,y) {
-//   fetch(
-//     `https://api.nasa.gov/planetary/earth/assets?lon=-${x}&lat=${y}&date=2018-01-01&&dim=0.10&api_key=8nssXB6HM9dQ02LP8ZPLLNxSbtsSIt4hIWisVIVG`
-//   )
-//     .then(function (response) {
-//       return response.json();
-//     })
-//     .then(function (data) {
-//       console.log(data);
-//     });
-// }
+// world clock api https://timezonedb.com/references/get-time-zone
+function getTime(x, y) {
+  fetch(
+    `https://api.ipgeolocation.io/timezone?apiKey=${timeKey}&lat=${x}&long=${y}`
+  )
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      const locationTime = data.time_12.slice(0, -6);
+      const am_pm = data.time_12.slice(9);
+      const formattedTime = locationTime + ' ' + am_pm;
+      timeEl.textContent = formattedTime;
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+}
