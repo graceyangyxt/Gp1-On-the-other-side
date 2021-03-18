@@ -39,6 +39,7 @@ const capitalEl = document.querySelector('.capitalEl');
 const languageEl = document.querySelector('.languageEl');
 const currencyEl = document.querySelector('.currencyEl');
 const populationEl = document.querySelector('.populationEl');
+const bordersEl = document.querySelector('.bordersEl');
 
 // pages
 const landingPg = document.querySelector('.landing-pg');
@@ -351,7 +352,7 @@ function appendLocation(x, y, z) {
   titleEl = document.createElement('div');
   titleEl.classList.add('current-location-cont');
   titleEl.innerHTML = `
-  <h2>${x ? x : ''}, ${y ? y : ''}, ${z ? z : ''}</h2>`;
+  <h2>${x ? x : ''}  ${y ? y : ''}  ${z ? z : ''}</h2>`;
   locationAppendCont.appendChild(titleEl);
 }
 
@@ -408,8 +409,13 @@ function getCountries(x) {
       flagEl.src = data.flag;
       capitalEl.textContent = data.capital;
       languageEl.textContent = data.languages[0].name;
-      currencyEl.textContent = `${data.currencies[0].name}, ${data.currencies[0].symbol}`;
+      currencyEl.textContent = `${data.currencies[0].code}, ${data.currencies[0].symbol}`;
       populationEl.textContent = data.population;
+      data.borders.forEach(function (element) {
+        const borders = document.createElement('div');
+        borders.textContent = element;
+        bordersEl.appendChild(borders);
+      });
     })
     .catch(function (err) {
       console.log('Error:', err);

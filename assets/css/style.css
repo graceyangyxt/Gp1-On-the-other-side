@@ -210,7 +210,7 @@ h3 {
   justify-content: space-evenly;
   align-items: center;
   width: 90vw;
-  height: 85vh;
+  height: 95vh;
   margin: auto;
   border-radius: 20px;
   /* background-color: var(--bg-blk); */
@@ -223,10 +223,17 @@ h3 {
   border-radius: 50%;
 }
 
+#location-append {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-around;
+}
+
 .time-weather-cont {
   display: flex;
   justify-content: space-between;
-  width: 85vw;
+  /* width: 85vw; */
+  margin-top: 0.5rem;
   padding: 0 0.5rem;
   color: var(--primary-wht);
 }
@@ -302,14 +309,23 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  align-items: center;
   width: 85vw;
   height: 30vh;
-  margin: 0 auto;
+  /* margin: 2.5rem auto; */
   border-radius: 20px;
   color: var(--primary-wht);
   background-color: var(--bg-blk);
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.info-container div {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 1rem;
+}
+
+.country {
+  justify-content: center !important;
 }
 
 .countryEl {
@@ -318,6 +334,38 @@ input:checked + .slider:before {
 
 .flagEl {
   width: 1.8rem;
+}
+
+.borders {
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.border-title {
+  width: 100%;
+  /* padding: 1rem; */
+  text-align: center;
+}
+
+.bordersEl {
+  display: flex;
+  justify-content: space-evenly;
+  /* flex-wrap: wrap; */
+  width: 100%;
+  padding: 0.5rem;
+  overflow: scroll;
+}
+
+.bordersEl div {
+  padding: 0.3rem;
+  background: linear-gradient(
+    to bottom,
+    var(--primary-gry) 0%,
+    var(--bg-blk) 100%
+  );
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
 .enlarge {
