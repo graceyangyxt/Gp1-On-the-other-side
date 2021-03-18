@@ -301,20 +301,27 @@ input:checked + .slider:before {
 .info-container {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
-  align-items: center;
   justify-content: space-evenly;
+  align-items: center;
   width: 85vw;
-  /* height: 65vh; */
+  height: 30vh;
   margin: 0 auto;
   border-radius: 20px;
+  color: var(--primary-wht);
   background-color: var(--bg-blk);
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
-.country-facts-list {
-  color: var(--primary-wht);
-  align-content: center;
+.countryEl {
+  margin-right: 0.5rem;
+}
+
+.flagEl {
+  width: 1.8rem;
+}
+
+.enlarge {
+  width: 85vw;
 }
 
 /* .show-round-map{

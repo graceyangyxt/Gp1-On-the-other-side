@@ -33,10 +33,12 @@ let unit = degMeasurement.dataset.unit;
 let titleEl;
 
 // elements for country data from rest countries
-const countryName = document.querySelector('.country');
-const flag = document.querySelector('.flag');
-const timeZone = document.querySelector('.timezone');
-const language = document.querySelector('.language');
+const countryEl = document.querySelector('.countryEl');
+const flagEl = document.querySelector('.flagEl');
+const capitalEl = document.querySelector('.capitalEl');
+const languageEl = document.querySelector('.languageEl');
+const currencyEl = document.querySelector('.currencyEl');
+const populationEl = document.querySelector('.populationEl');
 
 // pages
 const landingPg = document.querySelector('.landing-pg');
@@ -150,7 +152,6 @@ function getAntipodes(x, y) {
   } else if (lon < 0) {
     antLon = y + 180;
   }
-  console.log((180 - y) * -1);
   console.log(antLat, antLon);
 }
 
@@ -165,7 +166,7 @@ async function reverseGeo(x, y) {
         console.log('damn');
       } else {
         return response.json().then(function (data) {
-          console.log(data);
+          // console.log(data);
           if (data.status === 'ZERO_RESULTS') {
             appendLocation('Shit');
             return;
@@ -173,7 +174,7 @@ async function reverseGeo(x, y) {
 
           onWater(x, y).then(function (bool) {
             const isWater = bool;
-            console.log(isWater);
+            // console.log(isWater);
 
             if (!isWater) {
               const addressComp = data.results[0].address_components;
@@ -194,7 +195,7 @@ async function reverseGeo(x, y) {
               const countryShort = addressComp.filter(function (obj) {
                 return obj.types.includes('country');
               })[0]?.short_name;
-              console.log(countryShort);
+              // console.log(countryShort);
               getCountries(countryShort);
 
               let cityEl;
@@ -210,7 +211,7 @@ async function reverseGeo(x, y) {
               const nature = addressComp.filter(function (obj) {
                 return obj.types.includes('natural_feature');
               })[0]?.long_name;
-              console.log(nature);
+              // console.log(nature);
               appendLocation(nature);
             }
           });
@@ -245,7 +246,7 @@ function searchGeo(x) {
 
           onWater(lat, lon).then(function (bool) {
             const isWater = bool;
-            console.log(isWater);
+            // console.log(isWater);
 
             if (!isWater) {
               const addressComp = data.results[0].address_components;
@@ -266,7 +267,7 @@ function searchGeo(x) {
               const countryShort = addressComp.filter(function (obj) {
                 return obj.types.includes('country');
               })[0]?.short_name;
-              console.log(countryShort);
+              // console.log(countryShort);
               getCountries(countryShort);
 
               let cityEl;
@@ -282,11 +283,11 @@ function searchGeo(x) {
               const nature = addressComp.filter(function (obj) {
                 return obj.types.includes('natural_feature');
               })[0]?.long_name;
-              console.log(nature);
+              // console.log(nature);
               appendLocation(nature);
             }
           });
-          console.log(lat, lon);
+          // console.log(lat, lon);
           saveToLocalStorage(lat, lon);
           initMap(lat, lon);
           getWeather(lat, lon);
@@ -352,7 +353,6 @@ function appendLocation(x, y, z) {
   titleEl.innerHTML = `
   <h2>${x ? x : ''}, ${y ? y : ''}, ${z ? z : ''}</h2>`;
   locationAppendCont.appendChild(titleEl);
-  console.log(locationAppendCont.appendChild(titleEl));
 }
 
 // clear name of location for map
@@ -404,12 +404,12 @@ function getCountries(x) {
     })
     .then(function (data) {
       console.log(data);
-      countryName.textContent = `${data.name}, ${data.alpha2Code}`;
-      flag.src = data.flag;
-      data.timezones.forEach(function (element) {
-        timeZone.innerHTML = `${element}, `;
-        console.log(element);
-      });
+      countryEl.textContent = `${data.name}, ${data.alpha2Code}`;
+      flagEl.src = data.flag;
+      capitalEl.textContent = data.capital;
+      languageEl.textContent = data.languages[0].name;
+      currencyEl.textContent = `${data.currencies[0].name}, ${data.currencies[0].symbol}`;
+      populationEl.textContent = data.population;
     })
     .catch(function (err) {
       console.log('Error:', err);
