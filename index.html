@@ -50,100 +50,105 @@
       </nav>
     </header>
 
-    <main class="container">
-      <!-- landing page needed for toggling visibility of pages -->
-      <section class="landing-pg">
-        <div class="landing-search-cont">
-          <h2>Where Am I?</h2>
-          <!-- landing-map-marker class needed -->
-          <div class="form-flex">
-            <i class="material-icons landing-map-marker">location_on</i>
-            <form>
-              <!-- #landing-search-bar is needed -->
-              <input type="text" placeholder="Search" id="landing-search-bar" />
-              <!-- #landing-search-btn needed -->
-              <button type="submit" class="btn" id="landing-search-btn">
-                <i class="material-icons">search</i>
-              </button>
-            </form>
-          </div>
-          <!-- <button type="submit" class="btn" id="landing-randomize">Randomize</button> -->
-        </div>
-        <div class="earth-wrap">
-          <img
-            class="earth-map"
-            src="./assets/images/earth-globe-img.png"
-            alt="Image of Earth Globe"
-          />
-        </div>
-      </section>
-      <!-- results class needed -->
-      <!-- rechcek grid (col s12 m3 l3) -->
-
-      <!--CHANGE HERE-->
-      <section class="results-pg hide">
-        <!-- VERY IMPORTANT WE  -->
-        <div class="col s12 m6 l6 show-round-map">
-          <div class="responsive-img" id="map"></div>
-          <!-- #location-append needed -->
-        </div>
-        <div id="location-append">
-          <!-- <h3>You are at</h3> -->
-          <!-- Appended Locations Go Here -->
-          <div class="time-weather-cont">
-            <span class="time"></span>
-            <div class="weather">
-              <!-- <img src="" class="weather-icon" /> -->
-              <span class="temp"></span>
-              <label class="switch">
-                <input id="degToggle" type="checkbox" checked />
-                <span
-                  id="degMeasurement"
-                  class="slider round"
-                  data-unit="imperial"
-                >
-                  <span id="toggleF">F&deg;</span>
-                  <span id="toggleC">C&deg</span>
-                </span>
-              </label>
+      <main class="container">
+        <!-- landing page needed for toggling visibility of pages -->
+        <section class="landing-pg">
+          <div class="landing-search-cont">
+            <h2>Where Am I?</h2>
+            <!-- landing-map-marker class needed -->
+            <div class="form-flex">
+              <i class="material-icons landing-map-marker">location_on</i>
+              <form>
+                <!-- #landing-search-bar is needed -->
+                <input
+                  type="text"
+                  placeholder="Search"
+                  id="landing-search-bar"
+                />
+                <!-- #landing-search-btn needed -->
+                <button type="submit" class="btn" id="landing-search-btn">
+                  <i class="material-icons">search</i>
+                </button>
+              </form>
             </div>
+            <!-- <button type="submit" class="btn" id="landing-randomize">Randomize</button> -->
           </div>
-        </div>
-        <section class="col s12 m3 l3 info-container">
-          <!-- <h2>Country Facts</h2> -->
-          <div class="country">
-            <span class="countryEl"></span>
-            <img class="flagEl" src="" alt="flag" />
-          </div>
-          <div class="capital">
-            <span>Capital City: </span>
-            <span class="capitalEl"></span>
-          </div>
-          <div class="language">
-            <span>Primary Language: </span>
-            <span class="languageEl"></span>
-          </div>
-          <div class="currency">
-            <span>Primary Currency: </span>
-            <span class="currencyEl"></span>
-          </div>
-          <div class="population">
-            <span>Population: </span>
-            <span class="populationEl"></span>
-          </div>
-          <div class="borders">
-            <span class="border-title">Bordering Countries</span>
-            <div class="bordersEl"></div>
+          <div class="earth-wrap">
+            <img
+              class="earth-map"
+              src="./assets/images/earth-globe-img.png"
+              alt="Image of Earth Globe"
+            />
           </div>
         </section>
-        <!-- #antipodal-btn needed -->
-        <h2>What's on the other side?</h2>
-        <button type="button" class="btn" id="antipodal-btn">
-          <i class="material-icons">chevron_right</i>
-        </button>
-        <!-- <h3>What's on the other side?</h3> -->
-      </section>
-    </main>
+        <!-- results class needed -->
+        <!-- rechcek grid (col s12 m3 l3) -->
+
+        <!--CHANGE HERE-->
+        <section class="results-pg hide">
+          <!-- VERY IMPORTANT WE  -->
+          <div class="col s12 m6 l6 show-round-map">
+            <div class="responsive-img" id="map"></div>
+            <!-- #location-append needed -->
+          </div>
+          <div id="location-append">
+            <!-- <h3>You are at</h3> -->
+            <!-- Appended Locations Go Here -->
+            <div class="time-weather-cont">
+              <span class="time"></span>
+              <div class="weather">
+                <!-- <img src="" class="weather-icon" /> -->
+                <span class="temp"></span>
+                <label class="switch">
+                  <input id="degToggle" type="checkbox" checked />
+                  <span
+                    id="degMeasurement"
+                    class="slider round"
+                    data-unit="imperial"
+                  >
+                    <span id="toggleF">F&deg;</span>
+                    <span id="toggleC">C&deg</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <section class="col s12 m3 l3 info-container">
+            <!-- <h2>Country Facts</h2> -->
+            <div class="country">
+              <span class="countryEl"></span>
+              <img class="flagEl" src="" alt="flag" />
+            </div>
+            <div class="capital">
+              <span>Capital City: </span>
+              <span class="capitalEl"></span>
+            </div>
+            <div class="language">
+              <span>Primary Language: </span>
+              <span class="languageEl"></span>
+            </div>
+            <div class="currency">
+              <span>Primary Currency: </span>
+              <span class="currencyEl"></span>
+            </div>
+            <div class="population">
+              <span>Population: </span>
+              <span class="populationEl"></span>
+            </div>
+            <div class="borders">
+              <span class="border-title">Bordering Countries</span>
+              <div class="bordersEl"></div>
+            </div>
+          </section>
+          <!-- #antipodal-btn needed -->
+          <h2>What's on the other side?</h2>
+          <button type="button" class="btn" id="antipodal-btn">
+            <i class="material-icons">chevron_right</i>
+          </button>
+          <!-- <h3>What's on the other side?</h3> -->
+        </section>
+      </main>
+    </div>
 
     <footer></footer>
 
