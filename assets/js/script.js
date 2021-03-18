@@ -20,7 +20,7 @@ const landingCurrLoc = document.querySelector('.landing-map-marker');
 const landingSubmitBtn = document.querySelector('#landing-search-btn');
 
 // results page elements
-const antipodeBtn = document.querySelector('#antipdal-btn');
+const antipodeBtn = document.querySelector('#antipodal-btn');
 const locationAppendCont = document.querySelector('#location-append');
 const timeEl = document.querySelector('.time');
 const tempEl = document.querySelector('.temp');
@@ -411,6 +411,8 @@ function getCountries(x) {
       languageEl.textContent = data.languages[0].name;
       currencyEl.textContent = `${data.currencies[0].code}, ${data.currencies[0].symbol}`;
       populationEl.textContent = data.population;
+
+      bordersEl.textContent = '';
       data.borders.forEach(function (element) {
         const borders = document.createElement('div');
         borders.textContent = element;

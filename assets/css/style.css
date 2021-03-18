@@ -232,8 +232,8 @@ h3 {
 .time-weather-cont {
   display: flex;
   justify-content: space-between;
-  /* width: 85vw; */
-  margin-top: 0.5rem;
+  width: 85vw;
+  margin: 0.5rem 1rem;
   padding: 0 0.5rem;
   color: var(--primary-wht);
 }
@@ -368,9 +368,16 @@ input:checked + .slider:before {
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
-.enlarge {
-  width: 85vw;
+#antipodal-btn {
+  padding: 1rem;
+  width: 15%;
+  text-align: center;
+  border-radius: 20px;
 }
+
+/* .enlarge {
+  width: 85vw;
+} */
 
 /* .show-round-map{
   width: 200px;
