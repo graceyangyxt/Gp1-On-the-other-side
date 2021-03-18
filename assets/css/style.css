@@ -190,8 +190,12 @@ h2 {
 }
 
 #map {
-  width: 70vw;
-  height: 50vh;
+  width: 40rem;
+  height: 40rem;
+  border-radius: 50%;
+  -moz-border-radius: 999px;
+  -khtml-border-radius: 999px;
+  -webkit-border-radius: 999px;
 }
 
 .hide {

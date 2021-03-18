@@ -347,24 +347,24 @@ function onWater(x, y) {
 }
 
 // countries data https://restcountries.eu/
-function getCountries(x) {
-  fetch(`https://restcountries.eu/rest/v2/alpha/${x}`)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data);
-      countryName.textContent = `${data.name}, ${data.alpha2Code}`;
-      flag.src = data.flag;
-      data.timezones.forEach(function (element) {
-        timeZone.innerHTML = `${element}, `;
-        console.log(element);
-      });
-    })
-    .catch(function (err) {
-      console.log('Error:', err);
-    });
-}
+// function getCountries(x) {
+//   fetch(`https://restcountries.eu/rest/v2/alpha/${x}`)
+//     .then(function (response) {
+//       return response.json();
+//     })
+//     .then(function (data) {
+//       console.log(data);
+//       countryName.textContent = `${data.name}, ${data.alpha2Code}`;
+//       flag.src = data.flag;
+//       data.timezones.forEach(function (element) {
+//         timeZone.innerHTML = `${element}, `;
+//         console.log(element);
+//       });
+//     })
+//     .catch(function (err) {
+//       console.log('Error:', err);
+//     });
+// }
 
 // // fetch for fish data
 // function getFish() {
