@@ -404,7 +404,8 @@ input:checked + .slider:before {
     width: 38vw;
   }
 
-  form input {
+  form input,
+  .btn {
     height: 1.5rem;
   }
 
@@ -444,7 +445,8 @@ input:checked + .slider:before {
     font-size: 1.7em;
   }
 
-  form input {
+  form input,
+  .btn {
     height: 1.7rem;
   }
 
