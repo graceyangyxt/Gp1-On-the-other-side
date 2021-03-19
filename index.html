@@ -27,10 +27,6 @@
         <a href="index.html">
           <h1>The Other Side</h1>
         </a>
-        <div id="weather-container">
-          <h2 id="current-weather"></h2>
-          <div id="icon"></div>
-        </div>
 
         <!-- search-container needed, hide needed -->
         <div class="search-container hide">
@@ -141,10 +137,14 @@
             </div>
           </section>
           <!-- #antipodal-btn needed -->
-          <h2>What's on the other side?</h2>
-          <button type="button" class="btn" id="antipodal-btn">
+          <!-- <h2>What's on the other side?</h2> -->
+          <div id="antipodal-btn" class="antBtn from-left">
+            What's on the other side?
+            <!-- <i class="material-icons">chevron_right</i> -->
+          </div>
+          <!-- <button type="button" class="btn" id="antipodal-btn">
             <i class="material-icons">chevron_right</i>
-          </button>
+          </button> -->
           <!-- <h3>What's on the other side?</h3> -->
         </section>
       </main>
@@ -152,10 +152,7 @@
 
     <footer></footer>
 
+    <script src="./assets/js/config.js"></script>
     <script src="./assets/js/script.js"></script>
-    <script
-      async
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRp2lbrs-v_gZuyA8HJfvw6Ih4XKXCyI4&callback=initMap"
-    ></script>
   </body>
 </html>
