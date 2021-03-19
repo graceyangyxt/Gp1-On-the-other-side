@@ -30,6 +30,8 @@ const toggleF = document.querySelector('#toggleF');
 const toggleC = document.querySelector('#toggleC');
 const degMeasurement = document.querySelector('#degMeasurement');
 const deg = '\xB0';
+const infoCont = document.querySelector('.info-container');
+const waterChicken = document.querySelector('.water');
 let unit = degMeasurement.dataset.unit;
 let titleEl;
 
@@ -65,6 +67,9 @@ currLocation.addEventListener('click', function () {
     if (landingPg.classList.contains('hide') === false) {
       landingPg.classList.add('hide');
     }
+    if (antipodeBtn.classList.contains('hide')) {
+      antipodeBtn.classList.remove('hide');
+    }
   });
 });
 
@@ -75,6 +80,10 @@ submitBtn.addEventListener('click', function (e) {
   clearLocation();
   searchGeo(searchValue);
   navSearch.value = '';
+
+  if (antipodeBtn.classList.contains('hide')) {
+    antipodeBtn.classList.remove('hide');
+  }
 });
 
 // ** landing page ** current location icon - get current coordinates
@@ -97,6 +106,9 @@ landingCurrLoc.addEventListener('click', function () {
       searchCont.classList.remove('hide');
       landingPg.classList.add('hide');
     }
+    if (antipodeBtn.classList.contains('hide')) {
+      antipodeBtn.classList.remove('hide');
+    }
   });
 });
 
@@ -117,6 +129,9 @@ landingSubmitBtn.addEventListener('click', function (e) {
   if (searchCont.classList.contains('hide')) {
     searchCont.classList.remove('hide');
     landingPg.classList.add('hide');
+  }
+  if (antipodeBtn.classList.contains('hide')) {
+    antipodeBtn.classList.remove('hide');
   }
 });
 
@@ -143,6 +158,7 @@ antipodeBtn.addEventListener('click', function () {
   reverseGeo(antLat, antLon);
   onWater(antLat, antLon);
   getWeather(antLat, antLon);
+  antipodeBtn.classList.toggle('hide');
 });
 
 // functions
@@ -158,7 +174,7 @@ function getAntipodes(x, y) {
 }
 
 // fetch api using coordinates - https://developers.google.com/maps/documentation/geocoding/overview#geocoding-requests
-async function reverseGeo(x, y) {
+async function reverseGeo(x, y, zoom = 10) {
   fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${x},${y}&key=${gKey}`
   )
@@ -170,7 +186,10 @@ async function reverseGeo(x, y) {
         return response.json().then(function (data) {
           // console.log(data);
           if (data.status === 'ZERO_RESULTS') {
-            appendLocation('Shit');
+            appendLocation('Oops! Swiming to Disney World!');
+            setTimeout(function () {
+              searchGeo('disneyworld', 15);
+            }, 5000);
             return;
           }
 
@@ -220,7 +239,7 @@ async function reverseGeo(x, y) {
             }
           });
           saveToLocalStorage(lat, lon);
-          initMap(x, y);
+          initMap(x, y, zoom);
           getTime(x, y);
         });
       }
@@ -244,7 +263,10 @@ function searchGeo(x, zoom = 10) {
           lon = data.results[0].geometry.location.lng;
           console.log(lat, lon);
           if (data.status === 'ZERO_RESULTS') {
-            appendLocation('Shit');
+            appendLocation('Oops! Swimming to Disney World!');
+            setTimeout(function () {
+              searchGeo('disneyworld', 15);
+            }, 5000);
             return;
           }
 
@@ -364,7 +386,6 @@ function appendLocation(x, y, z) {
 
 // clear name of location for map
 function clearLocation() {
-  debugger;
   if (typeof titleEl === 'undefined' || !titleEl) {
     return;
   } else {
@@ -400,7 +421,11 @@ function onWater(x, y) {
         const water = data.water; // true or false in the json object - can use for conditional logic
 
         if (water === true) {
-          searchGeo('disneyworld', 15);
+          infoCont.classList.add('hide');
+          waterChicken.classList.remove('hide');
+        } else {
+          infoCont.classList.remove('hide');
+          waterChicken.classList.add('hide');
         }
 
         console.log('we are drowning: ' + water);

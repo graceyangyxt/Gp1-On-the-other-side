@@ -17,7 +17,9 @@
     href=“https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Roboto:wght@100;300;400&display=swap”
     rel=“stylesheet”> <link rel=“stylesheet”
     href=“https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css”/>
-    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" media="screen and (max-width: 768px)" href="./assets/css/style.css" />
+    <link rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 992px)" href="./assets/css/768.css" />
+    <link rel="stylesheet" media="screen and (min-width: 992px)" href="./assets/css/992.css" />
     <title>The Other Side</title>
   </head>
   <body>
@@ -80,62 +82,56 @@
         <!-- results class needed -->
         <!-- rechcek grid (col s12 m3 l3) -->
 
-        <!--CHANGE HERE-->
         <section class="results-pg hide">
-          <!-- VERY IMPORTANT WE  -->
           <div class="col s12 m6 l6 show-round-map">
             <div class="responsive-img" id="map"></div>
-            <!-- #location-append needed -->
           </div>
-          <div id="location-append">
-            <!-- <h3>You are at</h3> -->
-            <!-- Appended Locations Go Here -->
+          <div class="results-content">
+            <div id="location-append"></div>
             <div class="time-weather-cont">
               <span class="time"></span>
               <div class="weather">
-                <!-- <img src="" class="weather-icon" /> -->
                 <span class="temp"></span>
                 <label class="switch">
                   <input id="degToggle" type="checkbox" checked />
-                  <span
-                    id="degMeasurement"
-                    class="slider round"
-                    data-unit="imperial"
-                  >
+                  <span id="degMeasurement" class="slider round" data-unit="imperial">
                     <span id="toggleF">F&deg;</span>
                     <span id="toggleC">C&deg</span>
                   </span>
                 </label>
               </div>
             </div>
-          </div>
-          <section class="col s12 m3 l3 info-container">
-            <!-- <h2>Country Facts</h2> -->
-            <div class="country">
-              <span class="countryEl"></span>
-              <img class="flagEl" src="" alt="flag" />
-            </div>
-            <div class="capital">
-              <span>Capital City: </span>
-              <span class="capitalEl"></span>
-            </div>
-            <div class="language">
-              <span>Primary Language: </span>
-              <span class="languageEl"></span>
-            </div>
-            <div class="currency">
-              <span>Primary Currency: </span>
-              <span class="currencyEl"></span>
-            </div>
-            <div class="population">
-              <span>Population: </span>
-              <span class="populationEl"></span>
-            </div>
-            <div class="borders">
-              <span class="border-title">Bordering Countries</span>
-              <div class="bordersEl"></div>
-            </div>
-          </section>
+            <article class="col s12 m3 l3 info-container">
+              <div class="country">
+                <span class="countryEl"></span>
+                <img class="flagEl" src="" alt="flag" />
+              </div>
+              <div class="capital">
+                <span>Capital City: </span>
+                <span class="capitalEl"></span>
+              </div>
+              <div class="language">
+                <span>Primary Language: </span>
+                <span class="languageEl"></span>
+              </div>
+              <div class="currency">
+                <span>Primary Currency: </span>
+                <span class="currencyEl"></span>
+              </div>
+              <div class="population">
+                <span>Population: </span>
+                <span class="populationEl"></span>
+              </div>
+              <div class="borders">
+                <span class="border-title">Bordering Countries</span>
+                <div class="bordersEl"></div>
+              </div>
+            
+          </article>
+          <article class="water hide">
+            <img src="./assets/images/water-chicken.jpg" alt="chicken in water">
+            <h2>Beautiful day for a swim...</h2>
+          </article>
           <!-- #antipodal-btn needed -->
           <!-- <h2>What's on the other side?</h2> -->
           <div id="antipodal-btn" class="antBtn from-left">
@@ -146,6 +142,7 @@
             <i class="material-icons">chevron_right</i>
           </button> -->
           <!-- <h3>What's on the other side?</h3> -->
+        </div>
         </section>
       </main>
     </div>
