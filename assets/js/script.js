@@ -357,7 +357,7 @@ function initMap(x, y, zoom) {
   }
 }
 
-//find current weather of antipodal location
+//find current weather of antipodal location - https://openweathermap.org/current
 function getWeather(x, y) {
   fetch(
     `https://api.openweathermap.org/data/2.5/onecall?lat=${x}&lon=${y}&units=${unit}&exclude=minutely&appid=${wKey}`
