@@ -44,7 +44,7 @@ If you land in an unavailable location, you will be redirected to Disney World
 
 ![water](assets/readme/water.png)
 
-## Deployed Application URL
+### Deployed Application URL
 
 [The Other Side](https://ssharmin0029.github.io/project1/index.html)
 
