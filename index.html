@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Find out what the opposite side of the world is like">
+    <meta
+      name="description"
+      content="Find out what the opposite side of the world is like"
+    />
     <link
       rel="shortcut icon"
       href="./assets/images/fav-earth.svg"
@@ -18,137 +21,129 @@
     href=“https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Roboto:wght@100;300;400&display=swap”
     rel=“stylesheet”> <link rel=“stylesheet”
     href=“https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css”/>
-    <link rel="stylesheet" media="screen and (max-width: 768px)" href="./assets/css/style.css" />
-    <link rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 992px)" href="./assets/css/768.css" />
-    <link rel="stylesheet" media="screen and (min-width: 992px)" href="./assets/css/992.css" />
+    <link
+      rel="stylesheet"
+      media="screen and (max-width: 768px)"
+      href="./assets/css/style.css"
+    />
+    <link
+      rel="stylesheet"
+      media="screen and (min-width: 768px) and (max-width: 992px)"
+      href="./assets/css/768.css"
+    />
+    <link
+      rel="stylesheet"
+      media="screen and (min-width: 992px)"
+      href="./assets/css/992.css"
+    />
     <title>The Other Side</title>
   </head>
   <body>
     <header>
+      <!-- nav bar -->
       <nav>
-        <!-- nav bar with title, maybe search bar once we get onto the second page -- add a link to github repo -->
         <a href="index.html">
           <h1>The Other Side</h1>
         </a>
-
-        <!-- search-container needed, hide needed -->
         <div class="search-container hide">
-          <!-- map-marker class needed -->
           <i class="material-icons map-marker">location_on</i>
-          <!-- form needed -->
           <form>
-            <!-- input needed #search-bar is the target from js file -->
             <input type="text" placeholder="Search" id="search-bar" />
-            <!-- button needed - #search-bar is the target in the js file -->
             <button type="submit" class="btn" id="search-btn">
               <i class="material-icons">search</i>
             </button>
-            <!-- <button type="submit" class="btn" id="randomize">Randomize</button> -->
           </form>
         </div>
       </nav>
     </header>
-
-      <main class="container">
-        <!-- landing page needed for toggling visibility of pages -->
-        <section class="landing-pg">
-          <div class="landing-search-cont">
-            <h2>Where Am I?</h2>
-            <!-- landing-map-marker class needed -->
-            <div class="form-flex">
-              <i class="material-icons landing-map-marker">location_on</i>
-              <form>
-                <!-- #landing-search-bar is needed -->
-                <input
-                  type="text"
-                  placeholder="Search"
-                  id="landing-search-bar"
-                />
-                <!-- #landing-search-btn needed -->
-                <button type="submit" class="btn" id="landing-search-btn">
-                  <i class="material-icons">search</i>
-                </button>
-              </form>
+    <!-- container holds code for initial location and for antipodal location -->
+    <main class="container">
+      <!-- initial page -->
+      <section class="landing-pg">
+        <div class="landing-search-cont">
+          <h2>Where Am I?</h2>
+          <div class="form-flex">
+            <i class="material-icons landing-map-marker">location_on</i>
+            <form>
+              <input type="text" placeholder="Search" id="landing-search-bar" />
+              <button type="submit" class="btn" id="landing-search-btn">
+                <i class="material-icons">search</i>
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="earth-wrap">
+          <img
+            class="earth-map"
+            src="./assets/images/earth-globe-img.png"
+            alt="Image of Earth Globe"
+          />
+        </div>
+      </section>
+      <!-- code for location both initial and antipodal -->
+      <section class="results-pg hide">
+        <div class="col s12 m6 l6 show-round-map">
+          <!-- ***** GOOGLE MAP ***** -->
+          <div class="responsive-img" id="map"></div>
+        </div>
+        <div class="results-content">
+          <div id="location-append"></div>
+          <div class="time-weather-cont">
+            <span class="time"></span>
+            <div class="weather">
+              <span class="temp"></span>
+              <label class="switch">
+                <input id="degToggle" type="checkbox" checked />
+                <span
+                  id="degMeasurement"
+                  class="slider round"
+                  data-unit="imperial"
+                >
+                  <span id="toggleF">F&deg;</span>
+                  <span id="toggleC">C&deg</span>
+                </span>
+              </label>
             </div>
-            <!-- <button type="submit" class="btn" id="landing-randomize">Randomize</button> -->
           </div>
-          <div class="earth-wrap">
-            <img
-              class="earth-map"
-              src="./assets/images/earth-globe-img.png"
-              alt="Image of Earth Globe"
-            />
-          </div>
-        </section>
-        <!-- results class needed -->
-        <!-- rechcek grid (col s12 m3 l3) -->
-
-        <section class="results-pg hide">
-          <div class="col s12 m6 l6 show-round-map">
-            <div class="responsive-img" id="map"></div>
-          </div>
-          <div class="results-content">
-            <div id="location-append"></div>
-            <div class="time-weather-cont">
-              <span class="time"></span>
-              <div class="weather">
-                <span class="temp"></span>
-                <label class="switch">
-                  <input id="degToggle" type="checkbox" checked />
-                  <span id="degMeasurement" class="slider round" data-unit="imperial">
-                    <span id="toggleF">F&deg;</span>
-                    <span id="toggleC">C&deg</span>
-                  </span>
-                </label>
-              </div>
+          <article class="col s12 m3 l3 info-container">
+            <div class="country">
+              <span class="countryEl"></span>
+              <img class="flagEl" src="" alt="flag" />
             </div>
-            <article class="col s12 m3 l3 info-container">
-              <div class="country">
-                <span class="countryEl"></span>
-                <img class="flagEl" src="" alt="flag" />
-              </div>
-              <div class="capital">
-                <span>Capital City: </span>
-                <span class="capitalEl"></span>
-              </div>
-              <div class="language">
-                <span>Primary Language: </span>
-                <span class="languageEl"></span>
-              </div>
-              <div class="currency">
-                <span>Primary Currency: </span>
-                <span class="currencyEl"></span>
-              </div>
-              <div class="population">
-                <span>Population: </span>
-                <span class="populationEl"></span>
-              </div>
-              <div class="borders">
-                <span class="border-title">Bordering Countries</span>
-                <div class="bordersEl"></div>
-              </div>
-            
+            <div class="capital">
+              <span>Capital City: </span>
+              <span class="capitalEl"></span>
+            </div>
+            <div class="language">
+              <span>Primary Language: </span>
+              <span class="languageEl"></span>
+            </div>
+            <div class="currency">
+              <span>Primary Currency: </span>
+              <span class="currencyEl"></span>
+            </div>
+            <div class="population">
+              <span>Population: </span>
+              <span class="populationEl"></span>
+            </div>
+            <div class="borders">
+              <span class="border-title">Bordering Countries</span>
+              <div class="bordersEl"></div>
+            </div>
           </article>
           <article class="water hide">
-            <img src="./assets/images/water-chicken.jpg" alt="chicken in water">
+            <img
+              src="./assets/images/water-chicken.jpg"
+              alt="chicken in water"
+            />
             <h2>Beautiful day for a swim...</h2>
           </article>
-          <!-- #antipodal-btn needed -->
-          <!-- <h2>What's on the other side?</h2> -->
           <div id="antipodal-btn" class="antBtn from-left">
             What's on the other side?
-            <!-- <i class="material-icons">chevron_right</i> -->
           </div>
-          <!-- <button type="button" class="btn" id="antipodal-btn">
-            <i class="material-icons">chevron_right</i>
-          </button> -->
-          <!-- <h3>What's on the other side?</h3> -->
         </div>
-        </section>
-      </main>
-    </div>
-
-    <footer></footer>
+      </section>
+    </main>
 
     <script src="./assets/js/config.js"></script>
     <script src="./assets/js/script.js"></script>
