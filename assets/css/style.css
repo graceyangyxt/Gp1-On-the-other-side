@@ -335,10 +335,14 @@ input:checked + .slider:before {
 }
 
 .bordersEl {
+  display: flex;
+  justify-content: space-around;
   margin-bottom: 0 !important;
+  overflow: scroll;
 }
 
 .bordersEl div {
+  margin: 0 0.5rem 0 0;
   margin-bottom: 0;
 }
 
