@@ -1,7 +1,8 @@
-const gKey = 'AIzaSyCRp2lbrs-v_gZuyA8HJfvw6Ih4XKXCyI4';
-const owKey = 'gzBySF4Dg5x2zcSSi7pJ';
-const wKey = '9cf609413c8a8ba8656e92d51411f9af';
-const timeKey = '7b4641be27464367961f21d52f6bdbeb';
+const gScript = document.createElement('script');
+console.dir(gScript);
+gScript.async = 'true';
+gScript.src = `https://maps.googleapis.com/maps/api/js?key=${gKey}&callback=initMap`;
+document.body.append(gScript);
 
 let lat;
 let lon;
@@ -29,6 +30,8 @@ const toggleF = document.querySelector('#toggleF');
 const toggleC = document.querySelector('#toggleC');
 const degMeasurement = document.querySelector('#degMeasurement');
 const deg = '\xB0';
+const infoCont = document.querySelector('.info-container');
+const waterChicken = document.querySelector('.water');
 let unit = degMeasurement.dataset.unit;
 let titleEl;
 
@@ -64,6 +67,9 @@ currLocation.addEventListener('click', function () {
     if (landingPg.classList.contains('hide') === false) {
       landingPg.classList.add('hide');
     }
+    if (antipodeBtn.classList.contains('hide')) {
+      antipodeBtn.classList.remove('hide');
+    }
   });
 });
 
@@ -74,6 +80,10 @@ submitBtn.addEventListener('click', function (e) {
   clearLocation();
   searchGeo(searchValue);
   navSearch.value = '';
+
+  if (antipodeBtn.classList.contains('hide')) {
+    antipodeBtn.classList.remove('hide');
+  }
 });
 
 // ** landing page ** current location icon - get current coordinates
@@ -96,6 +106,9 @@ landingCurrLoc.addEventListener('click', function () {
       searchCont.classList.remove('hide');
       landingPg.classList.add('hide');
     }
+    if (antipodeBtn.classList.contains('hide')) {
+      antipodeBtn.classList.remove('hide');
+    }
   });
 });
 
@@ -116,6 +129,9 @@ landingSubmitBtn.addEventListener('click', function (e) {
   if (searchCont.classList.contains('hide')) {
     searchCont.classList.remove('hide');
     landingPg.classList.add('hide');
+  }
+  if (antipodeBtn.classList.contains('hide')) {
+    antipodeBtn.classList.remove('hide');
   }
 });
 
@@ -142,6 +158,7 @@ antipodeBtn.addEventListener('click', function () {
   reverseGeo(antLat, antLon);
   onWater(antLat, antLon);
   getWeather(antLat, antLon);
+  antipodeBtn.classList.toggle('hide');
 });
 
 // functions
@@ -157,7 +174,7 @@ function getAntipodes(x, y) {
 }
 
 // fetch api using coordinates - https://developers.google.com/maps/documentation/geocoding/overview#geocoding-requests
-async function reverseGeo(x, y) {
+async function reverseGeo(x, y, zoom = 10) {
   fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${x},${y}&key=${gKey}`
   )
@@ -169,7 +186,10 @@ async function reverseGeo(x, y) {
         return response.json().then(function (data) {
           // console.log(data);
           if (data.status === 'ZERO_RESULTS') {
-            appendLocation('Shit');
+            appendLocation('Oops! Swiming to Disney World!');
+            setTimeout(function () {
+              searchGeo('disneyworld', 15);
+            }, 5000);
             return;
           }
 
@@ -206,6 +226,7 @@ async function reverseGeo(x, y) {
               } else if (subLocality && !locality) {
                 cityEl = subLocality;
               }
+              clearLocation();
               appendLocation(cityEl, adminLvlOne, country);
             } else {
               const addressComp = data.results[0].address_components;
@@ -213,11 +234,12 @@ async function reverseGeo(x, y) {
                 return obj.types.includes('natural_feature');
               })[0]?.long_name;
               // console.log(nature);
+              clearLocation();
               appendLocation(nature);
             }
           });
           saveToLocalStorage(lat, lon);
-          initMap(x, y);
+          initMap(x, y, zoom);
           getTime(x, y);
         });
       }
@@ -228,7 +250,7 @@ async function reverseGeo(x, y) {
 }
 
 // fetch api for search bar - https://developers.google.com/maps/documentation/geocoding/overview#geocoding-requests
-function searchGeo(x) {
+function searchGeo(x, zoom = 10) {
   fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${x}&key=${gKey}
   `)
     .then(function (response) {
@@ -237,11 +259,14 @@ function searchGeo(x) {
       } else {
         return response.json().then(function (data) {
           console.log(data);
-          const lat = data.results[0].geometry.location.lat;
-          const lon = data.results[0].geometry.location.lng;
-
+          lat = data.results[0].geometry.location.lat;
+          lon = data.results[0].geometry.location.lng;
+          console.log(lat, lon);
           if (data.status === 'ZERO_RESULTS') {
-            appendLocation('Shit');
+            appendLocation('Oops! Swimming to Disney World!');
+            setTimeout(function () {
+              searchGeo('disneyworld', 15);
+            }, 5000);
             return;
           }
 
@@ -278,6 +303,7 @@ function searchGeo(x) {
               } else if (subLocality && !locality) {
                 cityEl = subLocality;
               }
+              clearLocation();
               appendLocation(cityEl, adminLvlOne, country);
             } else {
               const addressComp = data.results[0].address_components;
@@ -285,12 +311,13 @@ function searchGeo(x) {
                 return obj.types.includes('natural_feature');
               })[0]?.long_name;
               // console.log(nature);
+              clearLocation();
               appendLocation(nature);
             }
           });
           // console.log(lat, lon);
           saveToLocalStorage(lat, lon);
-          initMap(lat, lon);
+          initMap(lat, lon, zoom);
           getWeather(lat, lon);
           getTime(lat, lon);
         });
@@ -302,13 +329,14 @@ function searchGeo(x) {
 }
 
 // map https://developers.google.com/maps/documentation/javascript/overview
-function initMap(x, y) {
+function initMap(x, y, zoom) {
   if (x && y) {
     document.getElementById('map').innerHTML = '';
+    console.log('this is text:', zoom);
     const map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: x, lng: y },
-      zoom: 10,
-      mapTypeId: 'roadmap',
+      zoom: zoom,
+      mapTypeId: 'hybrid',
       mapTypeControl: false,
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
@@ -358,8 +386,11 @@ function appendLocation(x, y, z) {
 
 // clear name of location for map
 function clearLocation() {
-  if (titleEl) {
-    locationAppendCont.removeChild(titleEl);
+  if (typeof titleEl === 'undefined' || !titleEl) {
+    return;
+  } else {
+    titleEl.remove();
+    // locationAppendCont.removeChild(titleEl);
   }
 }
 
@@ -388,6 +419,15 @@ function onWater(x, y) {
       })
       .then(function (data) {
         const water = data.water; // true or false in the json object - can use for conditional logic
+
+        if (water === true) {
+          infoCont.classList.add('hide');
+          waterChicken.classList.remove('hide');
+        } else {
+          infoCont.classList.remove('hide');
+          waterChicken.classList.add('hide');
+        }
+
         console.log('we are drowning: ' + water);
         resolve(water);
       })
@@ -443,3 +483,10 @@ function getTime(x, y) {
       console.log(err);
     });
 }
+
+// const storedUnit = localStorage.getItem('unit');
+// if (storedUnit === 'metric') {
+//   const event = new Event('change', { bubbles: true });
+//    // declaratively move the toggle
+//   degToggle.dispatchEvent(event);
+// }

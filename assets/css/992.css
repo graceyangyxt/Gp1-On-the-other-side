@@ -29,17 +29,18 @@ body {
   background-size: cover;
   font-family: var(--fnt-primary);
   background-color: var(--bg-blk);
-  cursor: url(../images/cursor-img2.png), auto;
+  cursor: url(../images/cursor.png), auto;
 }
 
 /* nav-bar */
+
 nav {
   /* position: fixed; */
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100vw;
-  padding: 0.3rem;
+  padding: 1.3rem;
 }
 
 nav a {
@@ -48,15 +49,24 @@ nav a {
 
 h1 {
   margin-left: 0.3rem;
-  font-size: 1.3em;
+  font-size: 2.5em;
   font-family: var(--fnt-title);
   font-weight: 300;
   color: var(--primary-wht);
 }
 
+h2 {
+  font-family: var(--fnt-title);
+  font-weight: 300;
+  color: var(--primary-wht);
+}
+
+h3 {
+}
+
 .search-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   padding: 0 12px;
   height: 100%;
@@ -64,14 +74,14 @@ h1 {
 }
 
 form {
-  width: 32vw;
+  width: 100%;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
 form input {
   float: left;
-  width: 78%;
-  height: 1.3rem;
+  width: 90%;
+  height: 2.5rem;
   padding: 0 0.5rem;
   font-family: var(--fnt-primary);
   color: var(--primary-wht);
@@ -87,8 +97,8 @@ form input {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 22%;
-  height: 1.3rem;
+  width: 10%;
+  height: 2.5rem;
   border: 1px solid var(--primary-gry);
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -119,98 +129,90 @@ form::after {
 .landing-map-marker {
   color: var(--primary-wht);
   cursor: pointer;
+  padding: 1rem;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  /* height: 100vh; */
 }
 
 /* landing page */
 .landing-pg {
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  flex-direction: row-reverse;
+  justify-content: space-around;
   align-items: center;
-  height: 100vh;
+  margin: 0 5rem;
 }
 
 .landing-search-cont {
-  position: absolute;
-  top: 20vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  /* align-items: center; */
-  width: 90%;
-  padding: 0 12px;
-  margin-top: 5px;
+  justify-content: space-around;
+  align-items: center;
+  width: 50vw;
+  height: 12vh;
+  margin-bottom: 12rem;
 }
 
 .landing-search-cont h2 {
-  letter-spacing: 1rem;
-  margin-bottom: 0.5rem;
+  letter-spacing: 1.5rem;
 }
 
 .form-flex {
-  top: 0;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  /* margin: 0 5rem 10rem 0; */
 }
 
-.landing-search-cont form {
+.form-flex input {
   width: 90%;
-  margin: 0;
-  box-shadow: rgba(0, 0, 0, 0.3) 1.95px 1.95px 2.6px;
+  height: 2rem;
+  padding: 1rem;
+  padding: 1rem;
 }
 
-h2 {
-  font-family: var(--fnt-title);
-  font-weight: 300;
-  font-size: 1.3em;
-  color: var(--primary-wht);
-  text-align: center;
-}
-
-h3 {
-  font-family: var(--fnt-title);
-  font-weight: 300;
-  font-size: 0.9em;
-  color: var(--primary-wht);
-  text-align: center;
-  padding: 5px 0;
+.form-flex .btn {
+  width: 10%;
+  height: 2rem;
+  padding: 1rem;
 }
 
 .earth-wrap {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1000;
-  overflow: hidden;
+  width: 45vw;
+  text-align: center;
 }
 
 .earth-map {
-  position: relative;
-  top: 30vh;
-  width: 225vw;
+  width: 35rem;
 }
 
 /* results page */
 .results-pg {
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  /* flex-direction: row-reverse; */
+  justify-content: space-around;
   align-items: center;
-  width: 90vw;
-  height: 95vh;
-  margin: auto;
-  border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  margin: 0 5rem;
+}
+
+.show-round-map {
+  width: 45vw;
+  text-align: center;
 }
 
 #map {
-  margin-top: 10vh;
-  width: 85vw;
-  height: 85vw;
+  height: 35rem;
+  width: 35rem;
   border-radius: 50%;
+  box-shadow: rgba(245, 245, 245, 0.25) 2.95px 2.95px 9.6px;
 }
 
 .results-content,
@@ -219,8 +221,7 @@ h3 {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  width: 90vw;
-  margin-top: 1rem;
+  width: 50vw;
   color: var(--primary-wht);
 }
 
@@ -303,9 +304,9 @@ input:checked + .slider:before {
 }
 
 .info-container {
-  width: 100%;
+  width: 50%;
   margin: 1rem auto;
-  color: var(--primary-wht);
+  /* color: var(--primary-wht); */
 }
 
 .info-container div {
@@ -330,7 +331,6 @@ input:checked + .slider:before {
 }
 
 .border-title {
-  margin-bottom: 1rem;
   text-align: center;
 }
 
